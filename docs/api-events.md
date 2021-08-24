@@ -99,6 +99,8 @@ Necessary configuration that is not directly specified is taken from the nearest
 You can specify which events should lead to an update by either passing `options` to the [`EventReceiver`](#eventreceiver) or using `onEvent`.
 `onEvent` can also be used to directly access events allowing you to add custom event logic to your components.
 
+Additionally, you can use `onNotify` which is called when the [`<Resource>`](api-core.md#resource) has been asked to update and allows you to get all events that have lead to the update at once as well as the request and revision for the update.
+
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Usage-->
 
@@ -121,12 +123,13 @@ import { EventHandler } from "@civet/events";
 
 ### Props
 
-| Name          | Type                              | Description                                                                                                                                          |
-| ------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| eventReceiver | [`EventReceiver`](#eventreceiver) | [`EventReceiver`](#eventreceiver) to be used                                                                                                         |
-| resource      | `object`                          | [Resource context](api-core.md#resourceprovider) to be used                                                                                          |
-| options       | `object`                          | [`EventReceiver`](#eventreceiver) options                                                                                                            |
-| onEvent       | `(event: any) => boolean`         | Callback to filter events and handle your own event logic - if `true` is returned, the event is considered as handled and the resource is not update |
+| Name          | Type                                                             | Description                                                                                                                                          |
+| ------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| eventReceiver | [`EventReceiver`](#eventreceiver)                                | [`EventReceiver`](#eventreceiver) to be used                                                                                                         |
+| resource      | `object`                                                         | [Resource context](api-core.md#resourceprovider) to be used                                                                                          |
+| options       | `object`                                                         | [`EventReceiver`](#eventreceiver) options                                                                                                            |
+| onEvent       | `(event: any) => boolean`                                        | Callback to filter events and handle your own event logic - if `true` is returned, the event is considered as handled and the resource is not update |
+| onNotify      | `({ request: string, revision: string }, events: any[]) => void` | Informs when the [`<Resource>`](api-core.md#resource) has been requested to update                                                                   |
 
 ## `composeHandlers`
 
