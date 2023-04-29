@@ -9,7 +9,7 @@
     "deploy": "cross-env USE_SSH=true CURRENT_BRANCH=source DEPLOYMENT_BRANCH=master docusaurus deploy"
   },
   "dependencies": {
-    "@docusaurus/core": "^2.0.0-alpha.55",
+    "@docusaurus/core": "^2.4.0",
     "@docusaurus/preset-classic": "^2.0.0-alpha.55",
     "classnames": "^2.2.6",
     "cross-env": "^7.0.2",
