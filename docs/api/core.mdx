@@ -1,8 +1,8 @@
 ---
-id: api-core
-title: Core
-sidebar_label: Core
+sidebar_position: 2
 ---
+
+# Core
 
 [NPM](https://npmjs.com/package/@civet/core) | [GitHub](https://github.com/civet-org/core)
 
@@ -272,7 +272,7 @@ import { BaseDataStore } from "@civet/core";
 | transition      | nextData: `any[]`, prevData: `any[]`, context: `object`, prevContext: `object`                                                                                                                                             | `any[]`                   | Transition between the previous and current `data` array (see caveats for more details)                                 |
 | recycleItems    | nextData: `any[]`, prevData: `any[]`, context: `object`, prevContext: `object`                                                                                                                                             | `any[]`                   | Recycle unchanged items to prevent unneeded rerenders (see caveats of [`DataStore`](#datastore) for more details)       |
 | compareRequests | prev: `object`, next: `object`                                                                                                                                                                                             | `boolean`                 | Compare requests for equality - can be used to customize the comparison of requests when the props of a Resource change |
-| extend          | `{ resource: (resourcePlugin: ReactComponent) => void }`                                                                                                                                                                   | `void`                    | Extend Civet with custom functionality (see [Extending Civet](guides-extending.md#datastore) for more details)          |
+| extend          | `{ resource: (resourcePlugin: ReactComponent) => void }`                                                                                                                                                                   | `void`                    | Extend Civet with custom functionality (see [Extending Civet](/docs/guides/extending#datastore) for more details)       |
 
 ### Abstract members
 
@@ -445,7 +445,7 @@ import { dataStorePropType } from "@civet/core";
 
 Creates a plugin from the provided configuration function.
 
-See [Extending Civet](guides-extending.md#plugins) for further information.
+See [Extending Civet](/docs/guides/extending#plugins) for further information.
 
 <!--DOCUSAURUS_CODE_TABS-->
 <!--Usage-->

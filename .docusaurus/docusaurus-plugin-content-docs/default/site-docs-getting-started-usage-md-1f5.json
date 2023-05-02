@@ -1,0 +1,27 @@
+{
+  "unversionedId": "getting-started/usage",
+  "id": "getting-started/usage",
+  "title": "Usage",
+  "description": "Here is a basic example of how to use Civet.",
+  "source": "@site/docs/getting-started/usage.md",
+  "sourceDirName": "getting-started",
+  "slug": "/getting-started/usage",
+  "permalink": "/docs/getting-started/usage",
+  "draft": false,
+  "editUrl": "https://github.com/civet-org/civet-org.github.io/docs/getting-started/usage.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Installation",
+    "permalink": "/docs/getting-started/installation"
+  },
+  "next": {
+    "title": "Guides",
+    "permalink": "/docs/category/guides"
+  }
+}

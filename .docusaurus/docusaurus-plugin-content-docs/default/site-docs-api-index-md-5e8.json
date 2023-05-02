@@ -1,0 +1,27 @@
+{
+  "unversionedId": "api/index",
+  "id": "api/index",
+  "title": "Introduction",
+  "description": "Core",
+  "source": "@site/docs/api/index.md",
+  "sourceDirName": "api",
+  "slug": "/api/",
+  "permalink": "/docs/api/",
+  "draft": false,
+  "editUrl": "https://github.com/civet-org/civet-org.github.io/docs/api/index.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "API Reference",
+    "permalink": "/docs/category/api-reference"
+  },
+  "next": {
+    "title": "Core",
+    "permalink": "/docs/api/core"
+  }
+}

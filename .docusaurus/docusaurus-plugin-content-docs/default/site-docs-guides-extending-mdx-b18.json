@@ -1,0 +1,27 @@
+{
+  "unversionedId": "guides/extending",
+  "id": "guides/extending",
+  "title": "Extending Civet",
+  "description": "DataStore",
+  "source": "@site/docs/guides/extending.mdx",
+  "sourceDirName": "guides",
+  "slug": "/guides/extending",
+  "permalink": "/docs/guides/extending",
+  "draft": false,
+  "editUrl": "https://github.com/civet-org/civet-org.github.io/docs/guides/extending.mdx",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Guides",
+    "permalink": "/docs/category/guides"
+  },
+  "next": {
+    "title": "API Reference",
+    "permalink": "/docs/category/api-reference"
+  }
+}
