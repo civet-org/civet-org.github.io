@@ -5,6 +5,7 @@ import Layout from "@theme/Layout";
 import clsx from "clsx";
 import React from "react";
 
+import Heading from "@theme/Heading";
 import styles from "./index.module.css";
 
 const features = [
@@ -37,17 +38,18 @@ const features = [
   },
 ];
 
-function Feature({ imageUrl, title, description }) {
-  const imgUrl = useBaseUrl(imageUrl);
+function Feature({ Svg, title, description }) {
   return (
-    <div className={clsx("col col--4", styles.feature)}>
-      {imgUrl && (
+    <div className={clsx("col col--4")}>
+      {Svg ? (
         <div className="text--center">
-          <img className={styles.featureImage} src={imgUrl} alt={title} />
+          <Svg className={styles.featureSvg} role="img" />
         </div>
-      )}
-      <h3>{title}</h3>
-      <p>{description}</p>
+      ) : null}
+      <div className="text--center padding-horiz--md">
+        <Heading as="h3">{title}</Heading>
+        <p>{description}</p>
+      </div>
     </div>
   );
 }
@@ -61,7 +63,9 @@ export default function Home() {
     >
       <header className={clsx("hero hero--primary", styles.heroBanner)}>
         <div className="container">
-          <h1 className="hero__title">{siteConfig.title}</h1>
+          <Heading as="h1" className="hero__title">
+            {siteConfig.title}
+          </Heading>
           <p className="hero__subtitle">{siteConfig.tagline}</p>
           <div className={styles.buttons}>
             <Link
