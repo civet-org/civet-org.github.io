@@ -47,7 +47,7 @@ class MyDataStore extends DataStore {
 }
 ```
 
-:::caution
+:::warning
 Please note that the `extend` method is called by the [BaseDataStore](../api/core#basedatastore)'s constructor, so probably before your own constructor's logic is executed.
 
 Therefore, you should not depend on `this` inside of `extend`.
