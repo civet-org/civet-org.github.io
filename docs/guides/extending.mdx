@@ -4,58 +4,98 @@ sidebar_position: 1
 
 # Extending Civet
 
-## DataStore
+## DataProvider
 
-The main place for bringing your own functionality to Civet is the [`DataStore`](../api/core#datastore).
+The main place for bringing your own functionality to Civet is the [`DataProvider`](../api/core#dataprovider).
 You can simply add your own functionality to it by extending the class and then accessing it from within a [`Resource`](../api/core#resource) or from somewhere else.
 
-However, there may be some cases where this might not be enough, for example if you need a dedicated state for each [`Resource`](../api/core#resource) or want to manipulate the [`Resource`](../api/core#resource) context.
+However, this might not be sufficient in all cases, for example if your custom functionality requires the use of React hooks or if you want to extend the [`ResourceContext`](../api/core#resourcecontext).
 
-If this is the case, you can use [`DataStore`](../api/core#datastore)'s `extend` method.
-This method is called when initialising the [`DataStore`](../api/core#datastore) and provides a configuration API.
+If this is the case, you can use [`DataProvider`](../api/core#dataprovider)'s `extend` method.
+This method is called when initialising the [`DataProvider`](../api/core#dataprovider) and provides an API for registering various plugins.
 
-With this method, you can for example add hooks to each [`Resource`](../api/core#resource) that uses your [`DataStore`](../api/core#datastore).
-These hooks could then be used to collect debugging information, provide your own React context values to child components or, like said above, manipulate the [`Resource`](../api/core#resource)'s context itself.
+:::warning
+Please note that the `extend` method is called by the [DataProvider](../api/core#dataprovider)'s constructor, so probably before your own constructor's logic is executed.
+:::
+
+There are currently two types of plugins which can be registered using the `extend` function, [context plugins](#context-plugins) and [UI plugins](#ui-plugins).
+They are both used to extend the [`ResourceContext`](../api/core#resourcecontext) but differ in where they can be used and what you can accomplish with them.
 
 ```js
-/*
-Resource Hooks must always render the result of the children function.
-The children function takes the (un)modified context as its only argument.
-
-It is strongly recommended to add additional attributes to the context
-instead of modifying existing ones if possible
-in order to prevent other plugins or child components from breaking.
-*/
-function ResourceHook({ ...props, context, children }) {
-  return (
-    <ReactComponent>
-      {children({ ...context, extendedContext: 123 })}
-    </ReactComponent>
-  );
-}
-
-class MyDataStore extends DataStore {
+class MyDataProvider extends DataProvider {
   extend(extend) {
-    // This is necessary for the base class to work properly:
     super.extend(extend);
 
-    // Register a Resource hook component
-    extend.resource(ResourceHook);
+    // Register a context plugin
+    extend.context(useMyContextPlugin);
+
+    // Register a UI plugin
+    extend.ui(MyUIPlugin);
   }
 
-  // ...handleGet, etc.
+  // ...
+}
+```
+
+### Context plugins
+
+Context plugins are React hooks for extending the [`ResourceContext`](../api/core#resourcecontext).
+They work for both the [`Resource`](../api/core#resource) component and the [`useResource`](../api/core#useresource) hook.
+
+As these plugins are handled as React hooks, they may use React hooks (for example `useMemo`) themselves.
+Context plugins cannot render any content.
+
+Context plugins are handled in the order they are registered, always before [UI plugins](#ui-plugins).
+
+Their signature is:
+
+```js
+/**
+ * @param {object} context - the ResourceContext to be modified
+ * @param {props} context - custom props passed to useResource or Resource
+ * @returns the modified memoized ResourceContext
+ **/
+function useMyContextPlugin(context, props) {
+  return context;
 }
 ```
 
 :::warning
-Please note that the `extend` method is called by the [BaseDataStore](../api/core#basedatastore)'s constructor, so probably before your own constructor's logic is executed.
-
-Therefore, you should not depend on `this` inside of `extend`.
+The context returned by a context plugin must be memoized, for example by using React's `useMemo` hook.
 :::
 
-## Plugins
+### UI plugins
 
-You can bundle related functionality in standalone plugins in order to make them reusable.
+UI plugins are React components for extending the [`ResourceContext`](../api/core#resourcecontext).
+They only work for the [`Resource`](../api/core#resource) component and are ignored for the [`useResource`](../api/core#useresource) hook.
 
-The [`createPlugin`](../api/core#createplugin) function creates a plugin that can simply be called on an existing [`DataStore`](../api/core#datastore) implementation.
-You can then extend it like described above in the [DataStore section](#datastore).
+You can use UI plugins to render additional content.
+
+UI plugins are handled in the order they are registered, always after [context plugins](#context-plugins).
+
+Their signature is:
+
+```js
+function MyUIPlugin({ ...props, context, children }) {
+  // UI plugins must always render the result of the children function.
+  // The children function takes the (un)modified context as its only argument.
+  return children(context);
+}
+
+MyUIPlugin.propTypes = {
+  props: PropTypes.object, // custom props passed to Resource
+  context: PropTypes.object, // the ResourceContext to be modified
+  children: PropTypes.func, // render props function to pass the modified memoized context down
+}
+```
+
+:::warning
+The context passed down by a UI plugin must be memoized, for example by using React's `useMemo` hook.
+:::
+
+## DataProvider plugins
+
+You can bundle related functionality in standalone plugin functions in order to make them reusable by others.
+
+The [`createPlugin`](../api/core#createplugin) function creates a plugin that can simply be called on an existing [`DataProvider`](../api/core#dataprovider) implementation.
+You can then extend it like described above in the [DataProvider section](#dataprovider).

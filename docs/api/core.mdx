@@ -2,6 +2,9 @@
 sidebar_position: 2
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 # Core
 
 [NPM](https://npmjs.com/package/@civet/core) | [GitHub](https://github.com/civet-org/core)
@@ -10,82 +13,91 @@ sidebar_position: 2
 npm install @civet/core
 ```
 
-The core module provides civet's base functionality.
+The core module provides Civet's base functionality.
 
-## `<ConfigProvider>`
+## `ConfigContext`
 
-Provides general configuration for core components to its descendants using React's context API.
-
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
-
-```jsx
-<ConfigProvider dataStore={store}>...</ConfigProvider>
-```
-
-<!--Import-->
-
-```js
-import { ConfigProvider } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
-
-### Props
-
-| Name      | Type                      | Description |
-| --------- | ------------------------- | ----------- |
-| dataStore | [`DataStore`](#datastore) |             |
+React context for providing shared configuration to core components.
 
 ### Context
 
-| Name      | Type                      | Description |
-| --------- | ------------------------- | ----------- |
-| dataStore | [`DataStore`](#datastore) |             |
+| Name         | Type                            | Description |
+| ------------ | ------------------------------- | ----------- |
+| dataProvider | [`DataProvider`](#dataprovider) |             |
 
 ### Related
 
-[`<ConfigConsumer>`](#configconsumer), [`<Resource>`](#resource), [`useConfigContext`](#useconfigcontext)
+[`<ConfigProvider>`](#configprovider), [`<ConfigConsumer>`](#configconsumer), [`useConfigContext`](#useconfigcontext)
+
+## `<ConfigProvider>`
+
+Context provider for the [`ConfigContext`](#configcontext).
+
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```jsx
+    <ConfigProvider dataProvider={provider}>...</ConfigProvider>
+    ```
+  </TabItem>
+
+  <TabItem value="import" label="Import">
+    ```js
+    import { ConfigProvider } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
+
+### Props
+
+| Name         | Type                            | Description |
+| ------------ | ------------------------------- | ----------- |
+| dataProvider | [`DataProvider`](#dataprovider) |             |
+
+### Related
+
+[`ConfigContext`](#configcontext), [`<ConfigConsumer>`](#configconsumer), [`useConfigContext`](#useconfigcontext)
 
 ## `<ConfigConsumer>`
 
-Context consumer for [`<ConfigProvider>`](#configprovider).
+Context consumer for the [`ConfigContext`](#configcontext).
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```jsx
+    <ConfigConsumer>
+      {(context) => ...}
+    </ConfigConsumer>
+    ```
+  </TabItem>
 
-```jsx
-<ConfigConsumer>
-  {(context) => ...}
-</ConfigConsumer>
-```
+  <TabItem value="import" label="Import">
+    ```js
+    import { ConfigConsumer } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
 
-<!--Import-->
+### Related
 
-```js
-import { ConfigConsumer } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+[`ConfigContext`](#configcontext), [`<ConfigProvider>`](#configprovider), [`useConfigContext`](#useconfigcontext)
 
 ## `useConfigContext`
 
-Context hook for [`<ConfigProvider>`](#configprovider).
+Context consumer for the [`ConfigContext`](#configcontext).
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```js
+    const context = useConfigContext();
+    ```
+  </TabItem>
 
-```js
-const configContext = useConfigContext();
-```
-
-<!--Import-->
-
-```js
-import { useConfigContext } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { useConfigContext } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Function arguments
 
@@ -95,42 +107,44 @@ None
 
 | Type     | Description                       |
 | -------- | --------------------------------- |
-| `object` | [Config context](#configprovider) |
+| `object` | [ConfigContext](#configcontext) |
+
+### Related
+
+[`ConfigContext`](#configcontext), [`<ConfigProvider>`](#configprovider), [`<ConfigConsumer>`](#configconsumer)
 
 ## `<Resource>`
 
-Makes data from an [`DataStore`](#datastore) available to its descendants using a [`<ResourceProvider>`](#resourceprovider).
+Makes data from an [`DataProvider`](#dataprovider) available to its descendants using a [`<ResourceProvider>`](#resourceprovider).
 
 Necessary configuration that is not directly specified is taken from the nearest [`<ConfigProvider>`](#configprovider).
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```jsx
+    <Resource name="persons" query={{ city: "New York" }}>
+      ...
+    </Resource>
+    ```
+  </TabItem>
 
-```jsx
-<Resource name="persons" query={{ city: "New York" }}>
-  ...
-</Resource>
-```
-
-<!--Import-->
-
-```js
-import { Resource } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { Resource } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Props
 
-| Name       | Type                      | Description                                                                                                                                                                                      |
-| ---------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| name       | `string` **(required)**   | Resource name                                                                                                                                                                                    |
-| ids        | `any[]`                   | IDs to be queried                                                                                                                                                                                |
-| query      | `any`                     | Query filter                                                                                                                                                                                     |
-| empty      | `boolean`                 | Whether to prevent fetching data                                                                                                                                                                 |
-| options    | `object`                  | [`DataStore`](#datastore) options for requests                                                                                                                                                   |
-| dataStore  | [`DataStore`](#datastore) | [`DataStore`](#datastore) to be used for requests                                                                                                                                                |
-| persistent | `boolean` &#124; `"very"` | Whether stale data should be retained during the next request - this only applies if neither `dataStore` nor `name` have changed, unless set to `"very"` where also `name` changes are preserved |
+| Name         | Type                            | Description                                                                                                                                                                                         |
+| ------------ | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| name         | `string` **(required)**         | Resource name                                                                                                                                                                                       |
+| query        | `any`                           | Query filter                                                                                                                                                                                        |
+| empty        | `boolean`                       | Whether to prevent fetching data                                                                                                                                                                    |
+| options      | `object`                        | [`DataProvider`](#dataprovider) options for requests                                                                                                                                                |
+| dataProvider | [`DataProvider`](#dataprovider) | [`DataProvider`](#dataprovider) to be used for requests                                                                                                                                             |
+| persistent   | `boolean` &#124; `"very"`       | Whether stale data should be retained during the next request - this only applies if neither `dataProvider` nor `name` have changed, unless set to `"very"` where also `name` changes are preserved |
 
 ### Context
 
@@ -146,20 +160,19 @@ Provides resource context to its descendants using React's context API.
 
 In most cases you should use [`<Resource>`](#resource) instead.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```jsx
+    <ResourceProvider value={resourceContext}>...</ResourceProvider>
+    ```
+  </TabItem>
 
-```jsx
-<ResourceProvider value={resourceContext}>...</ResourceProvider>
-```
-
-<!--Import-->
-
-```js
-import { ResourceProvider } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { ResourceProvider } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Props
 
@@ -172,10 +185,9 @@ import { ResourceProvider } from "@civet/core";
 | Name         | Type                                                   | Description                                                                                        |
 | ------------ | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
 | name         | `string`                                               | Resource name                                                                                      |
-| ids          | `any[]`                                                | Queried IDs                                                                                        |
 | query        | `any`                                                  | Query filter                                                                                       |
-| options      | `object`                                               | [`DataStore`](#datastore) options used for the request                                             |
-| dataStore    | [`DataStore`](#datastore)                              | [`DataStore`](#datastore) to be used for requests                                                  |
+| options      | `object`                                               | [`DataProvider`](#dataprovider) options used for the request                                       |
+| dataProvider | [`DataProvider`](#dataprovider)                        | [`DataProvider`](#dataprovider) to be used for requests                                            |
 | request      | `string`                                               | Unique identifier for the current request - the value can be compared alphanumerically             |
 | revision     | `string`                                               | Unique identifier for the current request's revision - the value can be compared alphanumerically  |
 | data         | `any[]`                                                | The actual data                                                                                    |
@@ -196,41 +208,39 @@ import { ResourceProvider } from "@civet/core";
 
 Context consumer for [`<ResourceProvider>`](#resourceprovider).
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```jsx
+    <ResourceConsumer>
+      {(context) => ...}
+    </ResourceConsumer>
+    ```
+  </TabItem>
 
-```jsx
-<ResourceConsumer>
-  {(context) => ...}
-</ResourceConsumer>
-```
-
-<!--Import-->
-
-```js
-import { ResourceConsumer } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { ResourceConsumer } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
 
 ## `useResourceContext`
 
 Context hook for [`<ResourceProvider>`](#resourceprovider).
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```js
+    const resourceContext = useResourceContext();
+    ```
+  </TabItem>
 
-```js
-const resourceContext = useResourceContext();
-```
-
-<!--Import-->
-
-```js
-import { useResourceContext } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { useResourceContext } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Function arguments
 
@@ -242,47 +252,46 @@ None
 | -------- | ------------------------------------- |
 | `object` | [Resource context](#resourceprovider) |
 
-## `BaseDataStore`
+## `BaseDataProvider`
 
-DataStore base class.
+DataProvider base class.
 
-When implementing your own DataStore, usually you would prefer [`DataStore`](#datastore) over this class, as it already provides some general implementations.
+When implementing your own DataProvider, usually you would prefer [`DataProvider`](#dataprovider) over this class, as it already provides some general implementations.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Import-->
-
-```js
-import { BaseDataStore } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+<Tabs>
+  <TabItem value="import" label="Import">
+    ```js
+    import { BaseDataProvider } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Class members
 
-| Name            | Arguments                                                                                                                                                                                                                  | Return Type               | Description                                                                                                             |
-| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| subscribe       | resourceName: `string`, handler: `() => void`                                                                                                                                                                              | unsubscribe: `() => void` | Subscribe to data change notifications                                                                                  |
-| notify          | resourceName: `string`                                                                                                                                                                                                     | `void`                    | Notify data changes                                                                                                     |
-| get             | resourceName: `string`, ids: `any[]`, query: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                               | `Promise<any[]>`          | Get data (at once &#124; uses `handleGet` internally)                                                                   |
-| continuousGet   | resourceName: `string`, ids: `any[]`, query: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta), callback: `(error: any, complete: boolean, data: any[]) => void`, abortSignal: [`AbortSignal`](#abortsignal) | `void`                    | Get data (continuously &#124; uses `handleGet` internally)                                                              |
-| create          | resourceName: `string`, data: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                                              | `Promise<void>`           | Create data (uses `handleCreate` internally)                                                                            |
-| update          | resourceName: `string`, ids: `any[]`, query: `any`, data: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                  | `Promise<void>`           | Update data (uses `handleUpdate` internally)                                                                            |
-| patch           | resourceName: `string`, ids: `any[]`, query: `any`, data: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                  | `Promise<void>`           | Patch data (uses `handlePatch` internally)                                                                              |
-| remove          | resourceName: `string`, ids: `any[]`, query: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                               | `Promise<void>`           | Remove data (uses `handleRemove` internally)                                                                            |
-| transition      | nextData: `any[]`, prevData: `any[]`, context: `object`, prevContext: `object`                                                                                                                                             | `any[]`                   | Transition between the previous and current `data` array (see caveats for more details)                                 |
-| recycleItems    | nextData: `any[]`, prevData: `any[]`, context: `object`, prevContext: `object`                                                                                                                                             | `any[]`                   | Recycle unchanged items to prevent unneeded rerenders (see caveats of [`DataStore`](#datastore) for more details)       |
-| compareRequests | prev: `object`, next: `object`                                                                                                                                                                                             | `boolean`                 | Compare requests for equality - can be used to customize the comparison of requests when the props of a Resource change |
-| extend          | `{ resource: (resourcePlugin: ReactComponent) => void }`                                                                                                                                                                   | `void`                    | Extend Civet with custom functionality (see [Extending Civet](/docs/guides/extending#datastore) for more details)       |
+| Name            | Arguments                                                                                                                                                                                                    | Return Type               | Description                                                                                                             |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| subscribe       | resourceName: `string`, handler: `() => void`                                                                                                                                                                | unsubscribe: `() => void` | Subscribe to data change notifications                                                                                  |
+| notify          | resourceName: `string`                                                                                                                                                                                       | `void`                    | Notify data changes                                                                                                     |
+| get             | resourceName: `string`, query: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                               | `Promise<any[]>`          | Get data (at once &#124; uses `handleGet` internally)                                                                   |
+| continuousGet   | resourceName: `string`, query: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta), callback: `(error: any, complete: boolean, data: any[]) => void`, abortSignal: [`AbortSignal`](#abortsignal) | `void`                    | Get data (continuously &#124; uses `handleGet` internally)                                                              |
+| create          | resourceName: `string`, data: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                                | `Promise<void>`           | Create data (uses `handleCreate` internally)                                                                            |
+| update          | resourceName: `string`, query: `any`, data: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                  | `Promise<void>`           | Update data (uses `handleUpdate` internally)                                                                            |
+| patch           | resourceName: `string`, query: `any`, data: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                  | `Promise<void>`           | Patch data (uses `handlePatch` internally)                                                                              |
+| remove          | resourceName: `string`, query: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                               | `Promise<void>`           | Remove data (uses `handleRemove` internally)                                                                            |
+| transition      | nextData: `any[]`, prevData: `any[]`, context: `object`, prevContext: `object`                                                                                                                               | `any[]`                   | Transition between the previous and current `data` array (see caveats for more details)                                 |
+| recycleItems    | nextData: `any[]`, prevData: `any[]`, context: `object`, prevContext: `object`                                                                                                                               | `any[]`                   | Recycle unchanged items to prevent unneeded rerenders (see caveats of [`DataProvider`](#dataprovider) for more details) |
+| compareRequests | prev: `object`, next: `object`                                                                                                                                                                               | `boolean`                 | Compare requests for equality - can be used to customize the comparison of requests when the props of a Resource change |
+| extend          | `{ resource: (resourcePlugin: ReactComponent) => void }`                                                                                                                                                     | `void`                    | Extend Civet with custom functionality (see [Extending Civet](/docs/guides/extending#dataprovider) for more details)    |
 
 ### Abstract members
 
-| Name         | Arguments                                                                                                 | Return Type                                                                                                                                 | Description                                                                                   |
-| ------------ | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| handleGet    | resourceName: `string`, ids: `any[]`, query: `any`, options: `object`, meta: [`Meta`](#meta)              | `any[]` &#124; `Promise<any[]>` &#124; `(callback: (error: any, complete: boolean, data: any[]) => void, abortSignal: AbortSignal) => void` | A callback function can be returned to support continuous gets (see caveats for more details) |
-| handleCreate | resourceName: `string`, data: `any`, options: `object`, meta: [`Meta`](#meta)                             | `void` &#124; `Promise<void>`                                                                                                               |                                                                                               |
-| handleUpdate | resourceName: `string`, ids: `any[]`, query: `any`, data: `any`, options: `object`, meta: [`Meta`](#meta) | `void` &#124; `Promise<void>`                                                                                                               |                                                                                               |
-| handlePatch  | resourceName: `string`, ids: `any[]`, query: `any`, data: `any`, options: `object`, meta: [`Meta`](#meta) | `void` &#124; `Promise<void>`                                                                                                               |                                                                                               |
-| handleRemove | resourceName: `string`, ids: `any[]`, query: `any`, options: `object`, meta: [`Meta`](#meta)              | `void` &#124; `Promise<void>`                                                                                                               |                                                                                               |
+| Name         | Arguments                                                                                   | Return Type                                                                                                                                 | Description                                                                                   |
+| ------------ | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| handleGet    | resourceName: `string`, query: `any`, options: `object`, meta: [`Meta`](#meta)              | `any[]` &#124; `Promise<any[]>` &#124; `(callback: (error: any, complete: boolean, data: any[]) => void, abortSignal: AbortSignal) => void` | A callback function can be returned to support continuous gets (see caveats for more details) |
+| handleCreate | resourceName: `string`, data: `any`, options: `object`, meta: [`Meta`](#meta)               | `void` &#124; `Promise<void>`                                                                                                               |                                                                                               |
+| handleUpdate | resourceName: `string`, query: `any`, data: `any`, options: `object`, meta: [`Meta`](#meta) | `void` &#124; `Promise<void>`                                                                                                               |                                                                                               |
+| handlePatch  | resourceName: `string`, query: `any`, data: `any`, options: `object`, meta: [`Meta`](#meta) | `void` &#124; `Promise<void>`                                                                                                               |                                                                                               |
+| handleRemove | resourceName: `string`, query: `any`, options: `object`, meta: [`Meta`](#meta)              | `void` &#124; `Promise<void>`                                                                                                               |                                                                                               |
 
 ### Caveats
 
@@ -292,17 +301,17 @@ The functions `get`, `create`, ... internally invoke their corresponding abstrac
 
 #### continuousGet & transitioning
 
-`dataStore.get` resolves when the complete data is collected.
+`dataProvider.get` resolves when the complete data is collected.
 This is fine when resolving the data is really fast but can be troublesome when you want to load large data sets e.g. from a backend over a slow internet connection.
-You can implement your DataStore to support continuous data fetching by returning a callback function from `handleGet` rather than the data itself.
+You can implement your DataProvider to support continuous data fetching by returning a callback function from `handleGet` rather than the data itself.
 This allows you to forward partial data to the Resource component (or other compatible clients) even if the fetch has not yet been completed.
 
 It can be helpful to allow a transition between several updates of the component, e.g. to keep the order of the elements while the retrieval is still running.
-The `<Resource>` component supports this by calling the `DataStore`'s `transition` method each time it resolves new data. The function is called before `recycleItems`, so you don't have to worry about it when implementing the transition.
+The `<Resource>` component supports this by calling the `DataProvider`'s `transition` method each time it resolves new data. The function is called before `recycleItems`, so you don't have to worry about it when implementing the transition.
 
 #### Metadata
 
-The `meta` attribute provided to `DataStore`'s functions can have multiple applications.
+The `meta` attribute provided to `DataProvider`'s functions can have multiple applications.
 It is an interface which can be used to pass additional meta information beside the actual data to its underlying consumers.
 
 When a `get` request is made by a [`<Resource>`](#resource) component, the `meta` object has the following functions:
@@ -311,32 +320,31 @@ When a `get` request is made by a [`<Resource>`](#resource) component, the `meta
 - Its contents are preserved between multiple revisions of a request and thereas can be used to provide information to subsequent queries or utility functions like `transition` or `recycleItems`. When the [`<Resource>`](#resource) is in persistent mode, the information is also preserved between multiple requests.
 - The special key `persistant` (e.g. `meta.set('persistent', true)`) can be used to force the Resource's persistent state. This can be especially useful when the persistant state is required for performance optimizations. It takes the same values as [`<Resource>`](#resource)'s `persistent` prop.
 
-As the contents of `meta` may be preserved between multiple requests or revisions, it may be necessary to clean it up in your DataStore's `get` function. Please see [`Meta`](#meta) for more information.
+As the contents of `meta` may be preserved between multiple requests or revisions, it may be necessary to clean it up in your DataProvider's `get` function. Please see [`Meta`](#meta) for more information.
 
-## `DataStore`
+## `DataProvider`
 
-Default DataStore implementation (based on [`BaseDataStore`](#basedatastore)).
+Default DataProvider implementation (based on [`BaseDataProvider`](#basedataprovider)).
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default> 
+    ```js
+    class CustomProvider extends DataProvider {
+      handleGet(resource, query, options, meta) {
+        return ...;
+      }
+    }
 
-```js
-class CustomStore extends DataStore {
-  handleGet(resource, ids, query, options, meta) {
-    return ...;
-  }
-}
+    const provider = new CustomProvider();
+    ```
+  </TabItem>
 
-const store = new CustomStore();
-```
-
-<!--Import-->
-
-```js
-import { DataStore } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { DataProvider } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Class members
 
@@ -347,9 +355,9 @@ import { DataStore } from "@civet/core";
 
 ### Caveats
 
-#### BaseDataStore
+#### BaseDataProvider
 
-Please note that `DataStore` is an implementation of [`BaseDataStore`](#basedatastore), so make sure to check the Caveats section there, too.
+Please note that `DataProvider` is an implementation of [`BaseDataProvider`](#basedataprovider), so make sure to check the Caveats section there, too.
 
 #### recycleItems
 
@@ -384,62 +392,61 @@ As a result, the following checks should succeed:
 However, the default implementation may be expensive in regard to performance and may be inaccurate as it creates a hash over each item as its unique identifiers.
 This is why, if possible, you should improve it with a faster comparing approach by overriding the methods `recycleItemsUniqueIdentifier` and `recycleItemsIsUnchanged`. You can also completely ditch the default implementation by implementing your own version of `recycleItems` which may be required if you cannot build a unique identifier.
 
-## `isDataStore`
+## `isDataProvider`
 
-Identifies [`DataStore`](#datastore) instances.
+Identifies [`DataProvider`](#dataprovider) instances.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>        
+    ```js
+    const ds = new DataProvider();
 
-```js
-const ds = new DataStore();
+    if (!isDataProvider(ds)) {
+      throw new Error("Should be a DataProvider instance");
+    }
+    ```
+  </TabItem>
 
-if (!isDataStore(ds)) {
-  throw new Error("Should be a DataStore instance");
-}
-```
-
-<!--Import-->
-
-```js
-import { isDataStore } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { isDataProvider } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Function arguments
 
-| Name      | Type  | Description              |
-| --------- | ----- | ------------------------ |
-| dataStore | `any` | The object to be checked |
+| Name         | Type  | Description              |
+| ------------ | ----- | ------------------------ |
+| dataProvider | `any` | The object to be checked |
 
 ### Return type
 
-| Type      | Description                                                     |
-| --------- | --------------------------------------------------------------- |
-| `boolean` | Whether `dataStore` is an instance of [`DataStore`](#datastore) |
+| Type      | Description                                                              |
+| --------- | ------------------------------------------------------------------------ |
+| `boolean` | Whether `dataProvider` is an instance of [`DataProvider`](#dataprovider) |
 
-## `dataStorePropType`
+## `dataProviderPropType`
 
-PropType for [`DataStore`](#datastore) instances.
+PropType for [`DataProvider`](#dataprovider) instances.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```js
+    const propTypes = {
+      optional: dataProviderPropType,
+      required: dataProviderPropType.isRequired,
+    };
+    ```
+  </TabItem>
 
-```js
-const propTypes = {
-  optional: dataStorePropType,
-  required: dataStorePropType.isRequired,
-};
-```
+  <TabItem value="import" label="Import">
+    ```js
+    import { dataProviderPropType } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
 
-<!--Import-->
-
-```js
-import { dataStorePropType } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
 
 ## `createPlugin`
 
@@ -447,78 +454,80 @@ Creates a plugin from the provided configuration function.
 
 See [Extending Civet](/docs/guides/extending#plugins) for further information.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```jsx
+    const plugin = createPlugin((BaseDataProvider) => {
+      function ResourceHook({ ...props, context, children }) {
+        return (
+          <ReactComponent>
+            {children({ ...context, extendedContext: 123 })}
+          </ReactComponent>
+        );
+      }
 
-```jsx
-const plugin = createPlugin((BaseDataStore) => {
-  function ResourceHook({ ...props, context, children }) {
-    return (
-      <ReactComponent>
-        {children({ ...context, extendedContext: 123 })}
-      </ReactComponent>
-    );
-  }
+      class ExtendedDataProvider extends BaseDataProvider {
+        extend(extend) {
+          // This is necessary for the base class to work properly:
+          super.extend(extend);
 
-  class ExtendedDataStore extends BaseDataStore {
-    extend(extend) {
-      // This is necessary for the base class to work properly:
-      super.extend(extend);
+          // Register a Resource hook component
+          extend.resource(ResourceHook);
+        }
 
-      // Register a Resource hook component
-      extend.resource(ResourceHook);
-    }
+        // ... custom DataProvider functionality
+      }
 
-    // ... custom DataStore functionality
-  }
+      return ExtendedDataProvider;
+    });
 
-  return ExtendedDataStore;
-});
+    const DataProviderWithPlugin = plugin(SomeDataProvider);
+    ```
+  </TabItem>
 
-const DataStoreWithPlugin = plugin(SomeDataStore);
-```
-
-<!--Import-->
-
-```js
-import { createPlugin } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { createPlugin } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Function arguments
 
-| Name             | Type                                      | Description                                                  |
-| ---------------- | ----------------------------------------- | ------------------------------------------------------------ |
-| pluginDefinition | `(BaseDataStore: DataStore) => DataStore` | A function that returns an extended version of BaseDataStore |
+| Name             | Type                                               | Description                                                     |
+| ---------------- | -------------------------------------------------- | --------------------------------------------------------------- |
+| pluginDefinition | `(BaseDataProvider: DataProvider) => DataProvider` | A function that returns an extended version of BaseDataProvider |
 
 ### Return type
 
-| Type                       | Description |
-| -------------------------- | ----------- |
-| `(DataStore) => DataStore` | The plugin  |
+| Type                             | Description |
+| -------------------------------- | ----------- |
+| `(DataProvider) => DataProvider` | The plugin  |
 
 ## `compose`
 
 Composes the specified single-argument functions from right to left.
 
-This can be especially useful when applying multiple plugins to a DataStore.
+This can be especially useful when applying multiple plugins to a DataProvider.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```jsx
+    const DataProviderWithPlugins = compose(
+      pluginA,
+      pluginB,
+      pluginC
+    )(SomeDataProvider);
+    // This is the same as: pluginA(pluginB(pluginC(SomeDataProvider)))
+    ```
+  </TabItem>
 
-```jsx
-const DataStoreWithPlugins = compose(pluginA, pluginB, pluginC)(SomeDataStore);
-// This is the same as: pluginA(pluginB(pluginC(SomeDataStore)))
-```
-
-<!--Import-->
-
-```js
-import { compose } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { compose } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Function arguments
 
@@ -536,36 +545,35 @@ import { compose } from "@civet/core";
 
 Interface for handling client side notification events.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```js
+    // Basic usage
+    const notifier = new Notifier();
+    function handler() {
+      console.log("Subscriber was notified");
+    }
+    const unsubscribeHandler = notifier.subscribe(handler);
+    console.log(notifier.isSubscribed(handler)); // true
+    notifier.trigger();
+    unsubscribeHandler();
+    console.log(notifier.isSubscribed(handler)); // false
 
-```js
-// Basic usage
-const notifier = new Notifier();
-function handler() {
-  console.log("Subscriber was notified");
-}
-const unsubscribeHandler = notifier.subscribe(handler);
-console.log(notifier.isSubscribed(handler)); // true
-notifier.trigger();
-unsubscribeHandler();
-console.log(notifier.isSubscribed(handler)); // false
+    // You can pass arguments to the handlers
+    const notifier = new Notifier();
+    notifier.subscribe((a, b, c) => {
+      console.log("Notified:", a, b, c);
+    });
+    notifier.trigger(true, 2, "test");
+    ```
+  </TabItem>
 
-// You can pass arguments to the handlers
-const notifier = new Notifier();
-notifier.subscribe((a, b, c) => {
-  console.log("Notified:", a, b, c);
-});
-notifier.trigger(true, 2, "test");
-```
-
-<!--Import-->
-
-```js
-import { Notifier } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { Notifier } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Class members
 
@@ -579,40 +587,39 @@ import { Notifier } from "@civet/core";
 
 [`Notifier`](#notifier) that supports multiple separate event channels.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```js
+    // Basic usage
+    const notifier = new ChannelNotifier();
+    function handler() {
+      console.log("Subscriber was notified");
+    }
+    const unsubscribeHandlerFromChA = notifier.subscribe("channel-a", handler);
+    console.log(notifier.isSubscribed("channel-a", handler)); // true
+    console.log(notifier.isSubscribed("channel-b", handler)); // false
+    notifier.trigger("channel-a"); // Only notify channel a
+    notifier.trigger(); // Notify all channels
+    unsubscribeHandlerFromChA();
+    console.log(notifier.isSubscribed("channel-a", handler)); // false
 
-```js
-// Basic usage
-const notifier = new ChannelNotifier();
-function handler() {
-  console.log("Subscriber was notified");
-}
-const unsubscribeHandlerFromChA = notifier.subscribe("channel-a", handler);
-console.log(notifier.isSubscribed("channel-a", handler)); // true
-console.log(notifier.isSubscribed("channel-b", handler)); // false
-notifier.trigger("channel-a"); // Only notify channel a
-notifier.trigger(); // Notify all channels
-unsubscribeHandlerFromChA();
-console.log(notifier.isSubscribed("channel-a", handler)); // false
+    // You can pass arguments to the handlers
+    const notifier = new Notifier();
+    notifier.subscribe("channel-a", (a, b, c) => {
+      console.log("Notified:", a, b, c);
+    });
+    notifier.trigger("channel-a", true, 2, "test"); // Notify all channels
+    notifier.trigger(null, true, 2, "test"); // Notify all channels
+    // Please note that the channel name is not passed to handlers by default.
+    ```
+  </TabItem>
 
-// You can pass arguments to the handlers
-const notifier = new Notifier();
-notifier.subscribe("channel-a", (a, b, c) => {
-  console.log("Notified:", a, b, c);
-});
-notifier.trigger("channel-a", true, 2, "test"); // Notify all channels
-notifier.trigger(null, true, 2, "test"); // Notify all channels
-// Please note that the channel name is not passed to handlers by default.
-```
-
-<!--Import-->
-
-```js
-import { ChannelNotifier } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { ChannelNotifier } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Class members
 
@@ -626,35 +633,34 @@ import { ChannelNotifier } from "@civet/core";
 
 Interface for handling abort requests.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```js
+    // Basic usage
+    const signal = new AbortSignal();
+    signal.listen(() => {
+      console.log("Request has been aborted");
+    });
+    signal.abort();
+    signal.listen(() => {
+      console.log(
+        "This will be called immediately, as signal has already been aborted"
+      );
+    });
 
-```js
-// Basic usage
-const signal = new AbortSignal();
-signal.listen(() => {
-  console.log("Request has been aborted");
-});
-signal.abort();
-signal.listen(() => {
-  console.log(
-    "This will be called immediately, as signal has already been aborted"
-  );
-});
+    // The signal can be locked if it is now longer allowed to be aborted
+    const signal = new AbortSignal();
+    signal.lock();
+    signal.abort(); // No listeners will be notified since the signal is already locked
+    ```
+  </TabItem>
 
-// The signal can be locked if it is now longer allowed to be aborted
-const signal = new AbortSignal();
-signal.lock();
-signal.abort(); // No listeners will be notified since the signal is already locked
-```
-
-<!--Import-->
-
-```js
-import { AbortSignal } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { AbortSignal } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Class members
 
@@ -668,40 +674,39 @@ import { AbortSignal } from "@civet/core";
 
 Metadata key value map.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```js
+    // Basic usage
+    const meta = new Meta();
+    meta.set("test", 1);
+    const result = meta.commit();
+    console.log(result.test);
 
-```js
-// Basic usage
-const meta = new Meta();
-meta.set("test", 1);
-const result = meta.commit();
-console.log(result.test);
+    // Meta can be based on an existing object
+    const base = {};
+    const baseMeta = new Meta(base);
+    baseMeta.set("test", 1);
+    assert(base.test === baseMeta.get("test"));
 
-// Meta can be based on an existing object
-const base = {};
-const baseMeta = new Meta(base);
-baseMeta.set("test", 1);
-assert(base.test === baseMeta.get("test"));
+    // Meta can create (shallowly) immutable snapshots.
+    const previous = { a: 1 };
+    const meta = new Meta();
+    meta.set("a", 1);
+    const unchanged = meta.commit(previous);
+    meta.set("a", 2);
+    const changed = meta.commit(previous);
+    assert(previous === unchanged);
+    assert(previous !== changed);
+    ```
+  </TabItem>
 
-// Meta can create (shallowly) immutable snapshots.
-const previous = { a: 1 };
-const meta = new Meta();
-meta.set("a", 1);
-const unchanged = meta.commit(previous);
-meta.set("a", 2);
-const changed = meta.commit(previous);
-assert(previous === unchanged);
-assert(previous !== changed);
-```
-
-<!--Import-->
-
-```js
-import { Meta } from "@civet/core";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { Meta } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Constructor
 
