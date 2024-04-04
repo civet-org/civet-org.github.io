@@ -113,11 +113,47 @@ None
 
 [`ConfigContext`](#configcontext), [`<ConfigProvider>`](#configprovider), [`<ConfigConsumer>`](#configconsumer)
 
+## `ResourceContext`
+
+React context for providing resource state, usually provided by [`<Resource>`](#resource).
+
+### Context
+
+| Name         | Type                                                   | Description                                                                                        |
+| ------------ | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| name         | `string`                                               | Resource name                                                                                      |
+| query        | `any`                                                  | Query instructions                                                                                 |
+| options      | `object`                                               | Query options for requests                                                                         |
+| dataProvider | [`DataProvider`](#dataprovider)                        | [`DataProvider`](#dataprovider) to be used for requests                                            |
+| request      | `string`                                               | Unique identifier for the current request - the value can be compared alphanumerically             |
+| revision     | `string`                                               | Unique identifier for the current request's revision - the value can be compared alphanumerically  |
+| data         | `any[]`                                                | The actual data                                                                                    |
+| meta         | `object`                                               | Meta information                                                                                   |
+| error        | `Error` &#124; `boolean`                               | Error information about the most recent request, or `true` if no further details are available     |
+| isEmpty      | `boolean`                                              | Whether fetching data is disabled, resulting in an empty data array                                |
+| isLoading    | `boolean`                                              | Whether another query is currently being executed                                                  |
+| isIncomplete | `boolean`                                              | Whether the current query is still being executed                                                  |
+| isInitial    | `boolean`                                              | Whether the current query is the first non failing query                                           |
+| isStale      | `boolean`                                              | Whether the current data is stale                                                                  |
+| next         | `{ request: string, revision: string }`                | Information about the next query                                                                   |
+| notify       | `() => Promise<{ request: string, revision: string }>` | Callback to reload the current request - Returns a Promise with the resulting request and revision |
+
+### Related
+
+[`<Resource>`](#resource), [`useResource`](#useresource), [`<ResourceProvider>`](#resourceprovider), [`<ResourceConsumer>`](#resourceconsumer), [`useResourceContext`](#useresourcecontext)
+
 ## `<Resource>`
 
-Makes data from an [`DataProvider`](#dataprovider) available to its descendants using a [`<ResourceProvider>`](#resourceprovider).
+Provides data based on the given request details and [`DataProvider`](#dataprovider).
+Context provider for the [`ResourceContext`](#resourcecontext).
 
-Necessary configuration that is not directly specified is taken from the nearest [`<ConfigProvider>`](#configprovider).
+Necessary configuration that is not directly specified is taken from the [`ConfigContext`](#configcontext).
+
+There is also a [`useResource`](#useresource) hook available with similar functionality.
+
+:::warning
+The provided [`DataProvider`](#dataprovider) must not be changed.
+:::
 
 <Tabs>
   <TabItem value="usage" label="Usage" default>
@@ -137,33 +173,85 @@ Necessary configuration that is not directly specified is taken from the nearest
 
 ### Props
 
-| Name         | Type                            | Description                                                                                                                                                                                         |
-| ------------ | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| name         | `string` **(required)**         | Resource name                                                                                                                                                                                       |
-| query        | `any`                           | Query filter                                                                                                                                                                                        |
-| empty        | `boolean`                       | Whether to prevent fetching data                                                                                                                                                                    |
-| options      | `object`                        | [`DataProvider`](#dataprovider) options for requests                                                                                                                                                |
-| dataProvider | [`DataProvider`](#dataprovider) | [`DataProvider`](#dataprovider) to be used for requests                                                                                                                                             |
-| persistent   | `boolean` &#124; `"very"`       | Whether stale data should be retained during the next request - this only applies if neither `dataProvider` nor `name` have changed, unless set to `"very"` where also `name` changes are preserved |
-
-### Context
-
-See [`<ResourceProvider>`](#resourceprovider)
+| Name         | Type                            | Description                                                                                                                        |
+| ------------ | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| name         | `string` **(required)**         | Resource name                                                                                                                      |
+| query        | `any`                           | Query instructions                                                                                                                 |
+| options      | `object`                        | Query options for requests                                                                                                         |
+| empty        | `boolean`                       | Disables fetching data, resulting in an empty data array                                                                           |
+| persistent   | `boolean` &#124; `"very"`       | Whether stale data should be retained during the next request - this only applies if `name` did not change, unless set to `"very"` |
+| dataProvider | [`DataProvider`](#dataprovider) | [`DataProvider`](#dataprovider) to be used for requests - must not be changed                                                      |
 
 ### Related
 
-[`<ResourceProvider>`](#resourceprovider), [`<ResourceConsumer>`](#resourceconsumer), [`useResourceContext`](#useresourcecontext)
+[`ResourceContext`](#resourcecontext), [`useResource`](#useresource), [`<ResourceProvider>`](#resourceprovider), [`<ResourceConsumer>`](#resourceconsumer), [`useResourceContext`](#useresourcecontext)
 
-## `<ResourceProvider>`
+## `useResource`
 
-Provides resource context to its descendants using React's context API.
+Provides data based on the given request details and [`DataProvider`](#dataprovider).
+Can be used with [`ResourceProvider`](#resourceprovider).
 
-In most cases you should use [`<Resource>`](#resource) instead.
+Necessary configuration that is not directly specified is taken from the [`ConfigContext`](#configcontext).
+
+There is also a [`<Resource>`](#resource) component available with similar functionality.
+
+:::warning
+The provided [`DataProvider`](#dataprovider) must not be changed.
+:::
 
 <Tabs>
   <TabItem value="usage" label="Usage" default>
     ```jsx
-    <ResourceProvider value={resourceContext}>...</ResourceProvider>
+    const context = useResource({ name: "persons", query: { city: "New York" } });
+    ```
+  </TabItem>
+
+  <TabItem value="import" label="Import">
+    ```js
+    import { useResource } from "@civet/core";
+    ```
+  </TabItem>
+</Tabs>
+
+### Function arguments
+
+| Name   | Type     | Description                                       |
+| ------ | -------- | ------------------------------------------------- |
+| config | `object` | [Resource configuration](#resource-configuration) |
+
+#### Resource configuration
+
+| Name         | Type                            | Description                                                                                                                        |
+| ------------ | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| name         | `string` **(required)**         | Resource name                                                                                                                      |
+| query        | `any`                           | Query instructions                                                                                                                 |
+| options      | `object`                        | Query options for requests                                                                                                         |
+| empty        | `boolean`                       | Disables fetching data, resulting in an empty data array                                                                           |
+| persistent   | `boolean` &#124; `"very"`       | Whether stale data should be retained during the next request - this only applies if `name` did not change, unless set to `"very"` |
+| dataProvider | [`DataProvider`](#dataprovider) | [`DataProvider`](#dataprovider) to be used for requests - must not be changed                                                      |
+
+### Return type
+
+| Type     | Description                       |
+| -------- | --------------------------------- |
+| `object` | [ResourceContext](#resourcecontext) |
+
+### Related
+
+[`ResourceContext`](#resourcecontext), [`<Resource>`](#resource), [`<ResourceProvider>`](#resourceprovider), [`<ResourceConsumer>`](#resourceconsumer), [`useResourceContext`](#useresourcecontext)
+
+## `<ResourceProvider>`
+
+Context provider for the [`ResourceContext`](#resourcecontext).
+
+In most cases, it is better to use [`<Resource>`](#resource) or [`useResource`](#useresource) instead.
+
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```jsx
+    const context = useResource(...);
+
+    <ResourceProvider value={context}>...</ResourceProvider>
     ```
   </TabItem>
 
@@ -176,37 +264,17 @@ In most cases you should use [`<Resource>`](#resource) instead.
 
 ### Props
 
-| Name  | Type     | Description      |
-| ----- | -------- | ---------------- |
-| value | `object` | Resource context |
-
-### Context
-
-| Name         | Type                                                   | Description                                                                                        |
-| ------------ | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
-| name         | `string`                                               | Resource name                                                                                      |
-| query        | `any`                                                  | Query filter                                                                                       |
-| options      | `object`                                               | [`DataProvider`](#dataprovider) options used for the request                                       |
-| dataProvider | [`DataProvider`](#dataprovider)                        | [`DataProvider`](#dataprovider) to be used for requests                                            |
-| request      | `string`                                               | Unique identifier for the current request - the value can be compared alphanumerically             |
-| revision     | `string`                                               | Unique identifier for the current request's revision - the value can be compared alphanumerically  |
-| data         | `any[]`                                                | The actual data                                                                                    |
-| meta         | `object`                                               | Metadata                                                                                           |
-| error        | `Error` &#124; `boolean`                               | Error information about the most recent request, or `true` if no further information is available  |
-| isEmpty      | `boolean`                                              | Whether fetching data is prevented                                                                 |
-| isLoading    | `boolean`                                              | Whether another query is currently being executed                                                  |
-| isIncomplete | `boolean`                                              | Whether the current query is still being executed                                                  |
-| isInitial    | `boolean`                                              | Whether the current query is the first non failing query                                           |
-| isStale      | `boolean`                                              | Whether the current data is stale                                                                  |
-| notify       | `() => Promise<{ request: string, revision: string }>` | Callback to reload the current request - Returns a Promise with the resulting request and revision |
+| Name  | Type                                  | Description |
+| ----- | ------------------------------------- | ----------- |
+| value | [`ResourceContext`](#resourcecontext) |             |
 
 ### Related
 
-[`<Resource>`](#resource), [`<ResourceConsumer>`](#configconsumer), [`useResourceContext`](#useresourcecontext)
+[`ResourceContext`](#resourcecontext), [`<Resource>`](#resource), [`useResource`](#useresource), [`<ResourceConsumer>`](#resourceconsumer), [`useResourceContext`](#useresourcecontext)
 
 ## `<ResourceConsumer>`
 
-Context consumer for [`<ResourceProvider>`](#resourceprovider).
+Context consumer for the [`ResourceContext`](#resourcecontext).
 
 <Tabs>
   <TabItem value="usage" label="Usage" default>
@@ -224,14 +292,18 @@ Context consumer for [`<ResourceProvider>`](#resourceprovider).
   </TabItem>
 </Tabs>
 
+### Related
+
+[`ResourceContext`](#resourcecontext), [`<Resource>`](#resource), [`useResource`](#useresource), [`<ResourceProvider>`](#resourceprovider), [`useResourceContext`](#useresourcecontext)
+
 ## `useResourceContext`
 
-Context hook for [`<ResourceProvider>`](#resourceprovider).
+Context consumer for the [`ResourceContext`](#resourcecontext).
 
 <Tabs>
   <TabItem value="usage" label="Usage" default>
     ```js
-    const resourceContext = useResourceContext();
+    const context = useResourceContext();
     ```
   </TabItem>
 
@@ -250,81 +322,15 @@ None
 
 | Type     | Description                           |
 | -------- | ------------------------------------- |
-| `object` | [Resource context](#resourceprovider) |
+| `object` | [`ResourceContext`](#resourcecontext) |
 
-## `BaseDataProvider`
+### Related
 
-DataProvider base class.
-
-When implementing your own DataProvider, usually you would prefer [`DataProvider`](#dataprovider) over this class, as it already provides some general implementations.
-
-<Tabs>
-  <TabItem value="import" label="Import">
-    ```js
-    import { BaseDataProvider } from "@civet/core";
-    ```
-  </TabItem>
-</Tabs>
-
-### Class members
-
-| Name            | Arguments                                                                                                                                                                                                    | Return Type               | Description                                                                                                             |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| subscribe       | resourceName: `string`, handler: `() => void`                                                                                                                                                                | unsubscribe: `() => void` | Subscribe to data change notifications                                                                                  |
-| notify          | resourceName: `string`                                                                                                                                                                                       | `void`                    | Notify data changes                                                                                                     |
-| get             | resourceName: `string`, query: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                               | `Promise<any[]>`          | Get data (at once &#124; uses `handleGet` internally)                                                                   |
-| continuousGet   | resourceName: `string`, query: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta), callback: `(error: any, complete: boolean, data: any[]) => void`, abortSignal: [`AbortSignal`](#abortsignal) | `void`                    | Get data (continuously &#124; uses `handleGet` internally)                                                              |
-| create          | resourceName: `string`, data: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                                | `Promise<void>`           | Create data (uses `handleCreate` internally)                                                                            |
-| update          | resourceName: `string`, query: `any`, data: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                  | `Promise<void>`           | Update data (uses `handleUpdate` internally)                                                                            |
-| patch           | resourceName: `string`, query: `any`, data: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                  | `Promise<void>`           | Patch data (uses `handlePatch` internally)                                                                              |
-| remove          | resourceName: `string`, query: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                               | `Promise<void>`           | Remove data (uses `handleRemove` internally)                                                                            |
-| transition      | nextData: `any[]`, prevData: `any[]`, context: `object`, prevContext: `object`                                                                                                                               | `any[]`                   | Transition between the previous and current `data` array (see caveats for more details)                                 |
-| recycleItems    | nextData: `any[]`, prevData: `any[]`, context: `object`, prevContext: `object`                                                                                                                               | `any[]`                   | Recycle unchanged items to prevent unneeded rerenders (see caveats of [`DataProvider`](#dataprovider) for more details) |
-| compareRequests | prev: `object`, next: `object`                                                                                                                                                                               | `boolean`                 | Compare requests for equality - can be used to customize the comparison of requests when the props of a Resource change |
-| extend          | `{ resource: (resourcePlugin: ReactComponent) => void }`                                                                                                                                                     | `void`                    | Extend Civet with custom functionality (see [Extending Civet](/docs/guides/extending#dataprovider) for more details)    |
-
-### Abstract members
-
-| Name         | Arguments                                                                                   | Return Type                                                                                                                                 | Description                                                                                   |
-| ------------ | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| handleGet    | resourceName: `string`, query: `any`, options: `object`, meta: [`Meta`](#meta)              | `any[]` &#124; `Promise<any[]>` &#124; `(callback: (error: any, complete: boolean, data: any[]) => void, abortSignal: AbortSignal) => void` | A callback function can be returned to support continuous gets (see caveats for more details) |
-| handleCreate | resourceName: `string`, data: `any`, options: `object`, meta: [`Meta`](#meta)               | `void` &#124; `Promise<void>`                                                                                                               |                                                                                               |
-| handleUpdate | resourceName: `string`, query: `any`, data: `any`, options: `object`, meta: [`Meta`](#meta) | `void` &#124; `Promise<void>`                                                                                                               |                                                                                               |
-| handlePatch  | resourceName: `string`, query: `any`, data: `any`, options: `object`, meta: [`Meta`](#meta) | `void` &#124; `Promise<void>`                                                                                                               |                                                                                               |
-| handleRemove | resourceName: `string`, query: `any`, options: `object`, meta: [`Meta`](#meta)              | `void` &#124; `Promise<void>`                                                                                                               |                                                                                               |
-
-### Caveats
-
-#### Abstract functions
-
-The functions `get`, `create`, ... internally invoke their corresponding abstract counterparts `handle...` and perform generic validation on their parameters and return values. Therefore, you should not just override them, but implement the abstract `handle...` methods instead.
-
-#### continuousGet & transitioning
-
-`dataProvider.get` resolves when the complete data is collected.
-This is fine when resolving the data is really fast but can be troublesome when you want to load large data sets e.g. from a backend over a slow internet connection.
-You can implement your DataProvider to support continuous data fetching by returning a callback function from `handleGet` rather than the data itself.
-This allows you to forward partial data to the Resource component (or other compatible clients) even if the fetch has not yet been completed.
-
-It can be helpful to allow a transition between several updates of the component, e.g. to keep the order of the elements while the retrieval is still running.
-The `<Resource>` component supports this by calling the `DataProvider`'s `transition` method each time it resolves new data. The function is called before `recycleItems`, so you don't have to worry about it when implementing the transition.
-
-#### Metadata
-
-The `meta` attribute provided to `DataProvider`'s functions can have multiple applications.
-It is an interface which can be used to pass additional meta information beside the actual data to its underlying consumers.
-
-When a `get` request is made by a [`<Resource>`](#resource) component, the `meta` object has the following functions:
-
-- Its contents are published to the consumers of the [`<Resource>`](#resource) via the [Resource context](#resourceprovider).
-- Its contents are preserved between multiple revisions of a request and thereas can be used to provide information to subsequent queries or utility functions like `transition` or `recycleItems`. When the [`<Resource>`](#resource) is in persistent mode, the information is also preserved between multiple requests.
-- The special key `persistant` (e.g. `meta.set('persistent', true)`) can be used to force the Resource's persistent state. This can be especially useful when the persistant state is required for performance optimizations. It takes the same values as [`<Resource>`](#resource)'s `persistent` prop.
-
-As the contents of `meta` may be preserved between multiple requests or revisions, it may be necessary to clean it up in your DataProvider's `get` function. Please see [`Meta`](#meta) for more information.
+[`ResourceContext`](#resourcecontext), [`<Resource>`](#resource), [`useResource`](#useresource), [`<ResourceProvider>`](#resourceprovider), [`<ResourceConsumer>`](#resourceconsumer)
 
 ## `DataProvider`
 
-Default DataProvider implementation (based on [`BaseDataProvider`](#basedataprovider)).
+Base class for implementing your own DataProvider.
 
 <Tabs>
   <TabItem value="usage" label="Usage" default> 
@@ -348,21 +354,68 @@ Default DataProvider implementation (based on [`BaseDataProvider`](#basedataprov
 
 ### Class members
 
-| Name                         | Arguments                        | Return Type | Description                                                                                                                                           |
-| ---------------------------- | -------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| recycleItemsUniqueIdentifier | item: `any`                      | `string`    | Should return a string which is uniquely identifying the same item accross multiple requests.                                                         |
-| recycleItemsIsUnchanged      | nextItem: `any`, prevItem: `any` | `boolean`   | Return `true` if the item was not changed at all, e.g. both versions are completely equal. (You can do so by comparing ETags or similar if available) |
+| Name                | Arguments                                                                                                                                                                                                    | Return Type               | Description                                                                                                                                                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| get                 | resourceName: `string`, query: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                               | `Promise<any[]>`          | Get data (at once &#124; uses `handleGet` internally)                                                                                                                                                                   |
+| continuousGet       | resourceName: `string`, query: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta), callback: `(error: any, complete: boolean, data: any[]) => void`, abortSignal: [`AbortSignal`](#abortsignal) | `void`                    | Get data (continuously &#124; uses `handleGet` internally)                                                                                                                                                              |
+| create              | resourceName: `string`, data: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                                | `Promise<any>`            | Create data (uses `handleCreate` internally)                                                                                                                                                                            |
+| update              | resourceName: `string`, query: `any`, data: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                  | `Promise<any>`            | Update data (uses `handleUpdate` internally)                                                                                                                                                                            |
+| patch               | resourceName: `string`, query: `any`, data: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                  | `Promise<any>`            | Patch data (uses `handlePatch` internally)                                                                                                                                                                              |
+| remove              | resourceName: `string`, query: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                               | `Promise<any>`            | Remove data (uses `handleRemove` internally)                                                                                                                                                                            |
+| subscribe           | resourceName: `string`, handler: `() => void`                                                                                                                                                                | unsubscribe: `() => void` | Subscribe to data change notifications for the specified `resourceName`                                                                                                                                                 |
+| notify              | resourceName: `string`                                                                                                                                                                                       | `void`                    | Notify data changes for the specified `resourceName` (if no `resourceName` is specified, all subscribers are notified)                                                                                                  |
+| extend              | `{ context: (contextPlugin: ReactHook) => void, ui: (uiPlugin: ReactComponent) => void }`                                                                                                                    | `void`                    | Extend Civet with custom functionality (see [Extending Civet](/docs/guides/extending#dataprovider) for more details)                                                                                                    |
+| createInstance      |                                                                                                                                                                                                              | `any`                     | Creates an instance element for storing information that needs to be preserved over the lifetime of a consumer (available via `meta.instance` if provided)                                                              |
+| releaseInstance     | `any`                                                                                                                                                                                                        | `void`                    | Used to release an instance element previously created with `createInstance`                                                                                                                                            |
+| compareRequests     | nextRequestDetails: `object`, prevRequestDetails: `object`                                                                                                                                                   | `boolean`                 | Compare requests for equality - can be used to customize which changes to a resource's configuration cause a new request to be created                                                                                  |
+| shouldPersist       | nextRequestDetails: `object`, prevRequestDetails: `object`, persistent: `boolean` &#124; `"very"`                                                                                                            | `boolean`                 | Compare requests for persistency - can be used to customize which changes to a resource's configuration cause the resource state to be persisted                                                                        |
+| compareItemVersions | nextItem: `any`, prevItem: `any`                                                                                                                                                                             | `boolean`                 | Compare two item versions for equality (used in `recycleItems`) - return `true` if the item was not changed at all, e.g. both versions are completely equal. (You can do so by comparing ETags or similar if available) |
+| getItemIdentifier   | item: `any`                                                                                                                                                                                                  | `string`                  | Determine an item's unique identifier (used in `recycleItems`) - should return a string which is uniquely identifying the same item across multiple requests.                                                           |
+| transition          | nextContext: `object`, prevContext: `object`                                                                                                                                                                 | `any[]`                   | Transition between the previous and current `data` array (see caveats for more details)                                                                                                                                 |
+| recycleItems        | nextContext: `object`, prevContext: `object`                                                                                                                                                                 | `any[]`                   | Recycle unchanged items (memoization) to prevent unnecessary rerenders (see caveats for more details)                                                                                                                   |
+
+### Abstract members
+
+| Name         | Arguments                                                                                   | Return Type                                                                                                                                 | Description                                                                                   |
+| ------------ | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| handleGet    | resourceName: `string`, query: `any`, options: `object`, meta: [`Meta`](#meta)              | `any[]` &#124; `Promise<any[]>` &#124; `(callback: (error: any, complete: boolean, data: any[]) => void, abortSignal: AbortSignal) => void` | A callback function can be returned to support continuous gets (see caveats for more details) |
+| handleCreate | resourceName: `string`, data: `any`, options: `object`, meta: [`Meta`](#meta)               | `any` &#124; `Promise<any>`                                                                                                                 |                                                                                               |
+| handleUpdate | resourceName: `string`, query: `any`, data: `any`, options: `object`, meta: [`Meta`](#meta) | `any` &#124; `Promise<any>`                                                                                                                 |                                                                                               |
+| handlePatch  | resourceName: `string`, query: `any`, data: `any`, options: `object`, meta: [`Meta`](#meta) | `any` &#124; `Promise<any>`                                                                                                                 |                                                                                               |
+| handleRemove | resourceName: `string`, query: `any`, options: `object`, meta: [`Meta`](#meta)              | `any` &#124; `Promise<any>`                                                                                                                 |                                                                                               |
 
 ### Caveats
 
-#### BaseDataProvider
+#### Abstract functions
 
-Please note that `DataProvider` is an implementation of [`BaseDataProvider`](#basedataprovider), so make sure to check the Caveats section there, too.
+The functions `get`, `create`, ... internally invoke their corresponding abstract counterparts `handle...` and perform generic validation on their parameters and return values. Therefore, you should not override them, but implement the abstract `handle...` methods instead.
+
+#### Meta information
+
+The `meta` attribute provided to `DataProvider`'s functions can have multiple applications.
+It is an interface which can be used to pass additional meta information beside the actual data to its consumers.
+
+When a `get` request is made by the [`<Resource>`](#resource) component or [`useResource`](#useresource) hook, the `meta` object has the following functions:
+
+- Its contents are published to the consumers of the resource via the [`ResourceContext`](#resourcecontext).
+- Its contents are preserved between multiple revisions of a request and thereas can be used to provide information to subsequent queries or utility functions like `transition` or `recycleItems`. When the resource is in persistent mode, the information is also preserved between multiple requests.
+
+As the contents of `meta` may be preserved between multiple requests or revisions, it may be necessary to clean them up in your DataProvider's `get` function. Please see [`Meta`](#meta) for more information.
+
+#### continuousGet & transitioning
+
+`dataProvider.get` resolves when the complete data is collected.
+This is fine when resolving the data is really fast but can be troublesome when you want to load large data sets e.g. from a backend over a slow internet connection.
+You can implement your DataProvider to support continuous data fetching by returning a callback function from `handleGet` rather than the data itself.
+This allows you to publish incomplete data to a resource (or other compatible clients) even if the fetch has not yet been completed.
+
+It can be helpful to allow a transition between several updates of the component, e.g. to keep the order of the elements while the retrieval is still running.
+The [`<Resource>`](#resource) component and [`useResource`](#useresource) hook support this by calling the `DataProvider`'s `transition` method each time it resolves new data. The function is called before `recycleItems`, so you don't have to worry about memoization when implementing the transition.
 
 #### recycleItems
 
-React offers tools to avoid unnecessary component updates, including `React.Component.shouldComponentUpdate`, `React.PureComponent` and `React.memo`.
-These tools check whether the props of a component have changed since the previous render to determine if the component needs to be updated again.
+React offers tools to avoid unnecessary component updates, for example `shouldComponentUpdate`, `PureComponent` and `memo`.
+These tools check whether the props of a component have changed since the previous render to determine if the component needs to render again.
 The fastest way to achieve this would be to use `Object.is`, which behaves like JavaScript's strict comparison operator `===` except for a few differences.
 This function works great for primitives like strings or numbers, but doesn't work like we would expect it to when used with objects and arrays.
 This is because objects and arrays (which in fact are objects as well) are compared by their memory addresses instead of their contents. See the example below:
@@ -376,7 +429,7 @@ a === c; // -> true: same memory address
 ```
 
 `recycleItems` attempts to fix this issue.
-It is internally called by the [`<Resource>`](#resource) component after each fetch.
+It is internally called by the [`<Resource>`](#resource) component and [`useResource`](#useresource) hook after each fetch.
 The function compares the previous items with the next ones and attempts to reapply all unchanged items from the previous array to the new one.
 As a result, the following checks should succeed:
 
@@ -390,7 +443,7 @@ As a result, the following checks should succeed:
   - else (even if it was reordered in the array): `prevItem === nextItem`
 
 However, the default implementation may be expensive in regard to performance and may be inaccurate as it creates a hash over each item as its unique identifiers.
-This is why, if possible, you should improve it with a faster comparing approach by overriding the methods `recycleItemsUniqueIdentifier` and `recycleItemsIsUnchanged`. You can also completely ditch the default implementation by implementing your own version of `recycleItems` which may be required if you cannot build a unique identifier.
+This is why, if possible, you should improve it with a faster comparing algorithm by overriding the methods `getItemIdentifier` and `compareItemVersions`. You can also completely ditch the default implementation by implementing your own version of `recycleItems`. This is required in cases where you cannot determine a unique identifier per item.
 
 ## `isDataProvider`
 
@@ -447,35 +500,29 @@ PropType for [`DataProvider`](#dataprovider) instances.
   </TabItem>
 </Tabs>
 
-
 ## `createPlugin`
 
 Creates a plugin from the provided configuration function.
 
-See [Extending Civet](/docs/guides/extending#plugins) for further information.
+See [Extending Civet](/docs/guides/extending#plugins) for further details.
 
 <Tabs>
   <TabItem value="usage" label="Usage" default>
     ```jsx
     const plugin = createPlugin((BaseDataProvider) => {
-      function ResourceHook({ ...props, context, children }) {
-        return (
-          <ReactComponent>
-            {children({ ...context, extendedContext: 123 })}
-          </ReactComponent>
-        );
+      function useMyContextPlugin(context, props) {
+        return context;
       }
 
       class ExtendedDataProvider extends BaseDataProvider {
         extend(extend) {
-          // This is necessary for the base class to work properly:
           super.extend(extend);
 
-          // Register a Resource hook component
-          extend.resource(ResourceHook);
+          // Register a context plugin
+          extend.context(useMyContextPlugin);
         }
 
-        // ... custom DataProvider functionality
+        // ...
       }
 
       return ExtendedDataProvider;
@@ -494,9 +541,9 @@ See [Extending Civet](/docs/guides/extending#plugins) for further information.
 
 ### Function arguments
 
-| Name             | Type                                               | Description                                                     |
-| ---------------- | -------------------------------------------------- | --------------------------------------------------------------- |
-| pluginDefinition | `(BaseDataProvider: DataProvider) => DataProvider` | A function that returns an extended version of BaseDataProvider |
+| Name             | Type                                               | Description                                                       |
+| ---------------- | -------------------------------------------------- | ----------------------------------------------------------------- |
+| pluginDefinition | `(BaseDataProvider: DataProvider) => DataProvider` | A function that returns an extended version of `BaseDataProvider` |
 
 ### Return type
 
@@ -664,15 +711,23 @@ Interface for handling abort requests.
 
 ### Class members
 
-| Name   | Arguments              | Return Type               | Description                                           |
-| ------ | ---------------------- | ------------------------- | ----------------------------------------------------- |
-| listen | listener: `() => void` | unsubscribe: `() => void` | Listen for abort signals                              |
-| abort  |                        | `void`                    | Abort the signal                                      |
-| lock   |                        | `void`                    | Lock the signal (The signal can no longer be aborted) |
+| Name   | Arguments              | Return Type                   | Description                                           |
+| ------ | ---------------------- | ----------------------------- | ----------------------------------------------------- |
+| listen | listener: `() => void` | unsubscribe: `() => void`     | Listen for abort signals                              |
+| abort  |                        | `void`                        | Abort the signal                                      |
+| lock   |                        | `void`                        | Lock the signal (The signal can no longer be aborted) |
+| proxy  |                        | `{ listen, locked, aborted }` | Creates a readonly proxy for the signal               |
+
+### Class variables
+
+| Name    | Type      | Description                   |
+| ------- | --------- | ----------------------------- |
+| locked  | `boolean` | Whether the signal is locked  |
+| aborted | `boolean` | Whether the signal is aborted |
 
 ## `Meta`
 
-Metadata key value map.
+Meta information key value map.
 
 <Tabs>
   <TabItem value="usage" label="Usage" default>
@@ -710,9 +765,10 @@ Metadata key value map.
 
 ### Constructor
 
-| Arguments      | Description                                    |
-| -------------- | ---------------------------------------------- |
-| base: `object` | All changes get applied to `base` if it is set |
+| Arguments       | Description                                    |
+| --------------- | ---------------------------------------------- |
+| base: `object`  | All changes get applied to `base` if it is set |
+| instance: `any` | Instance element for the meta object           |
 
 ### Class members
 
@@ -727,6 +783,12 @@ Metadata key value map.
 | set     | key: `string`, value: `any` | `void`                          | Set the value for the specified key. Make sure that values are immutable!                                                              |
 | values  |                             | `any[]`                         | Get all values from the object                                                                                                         |
 | commit  | prev: `object`              | `object`                        | Get the object as a plain JavaScript object - returns a shallow copy of the current value, or `prev` if provided and if all keys match |
+
+### Class variables
+
+| Name     | Type  | Description                                         |
+| -------- | ----- | --------------------------------------------------- |
+| instance | `any` | The instance element if provided by the constructor |
 
 ### Caveats
 
