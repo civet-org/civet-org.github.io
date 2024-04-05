@@ -121,11 +121,7 @@ export default function Home() {
             <div className="col col--8 col--offset-2 padding-vert--lg">
               <h2>Try it Out</h2>
               <iframe
-                width="100%"
-                height="500px"
-                src="https://codesandbox.io/embed/civet-demo-l22kk8mj3m?autoresize=1&fontsize=14"
-                frameborder="0"
-                title="Civet Demo"
+                src="https://codesandbox.io/embed/5fr4xn?view=Editor+%2B+Preview&module=%2Fsrc%2FGameList.js&hidenavigation=1"
                 style={{
                   width: "100%",
                   height: "500px",
@@ -133,8 +129,9 @@ export default function Home() {
                   borderRadius: "4px",
                   overflow: "hidden",
                 }}
-                sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"
-                allowfullscreen
+                title="Civet Game Demo"
+                allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+                sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
               ></iframe>
             </div>
           </div>
