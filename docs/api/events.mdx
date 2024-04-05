@@ -15,8 +15,7 @@ npm install @civet/events
 
 The events module provides advanced event handling functionality.
 
-The [`DataProvider`](core#dataprovider) already has basic support for handling events. However, it is limited to updating all subscribers of a specific resource.
-If you need more advanced event handling, this is the place to go.
+The [`DataProvider`](core#dataprovider) already has basic support for handling events. However, it is limited to updating all subscribers of a specific resource. If you need more advanced event handling, this is the place to go.
 
 ## `ConfigContext`
 
@@ -110,7 +109,7 @@ None
 
 | Type     | Description                       |
 | -------- | --------------------------------- |
-| `object` | [ConfigContext](#configcontext) |
+| `object` | [`ConfigContext`](#configcontext) |
 
 ### Related
 
@@ -118,24 +117,22 @@ None
 
 ## `<EventHandler>`
 
-Subscribes to an [`EventReceiver`](#eventreceiver) to update a [`<Resource>`](core#resource) when events occur.
+Enables automatic updating for a [`<Resource>`](core#resource) component or [`useResource`](core#useresource) hook by subscribing to an [`EventReceiver`](#eventreceiver).
 
-Necessary configuration that is not directly specified is taken from the nearest [`<ConfigProvider>`](#configprovider) and [`<Resource>`](core#resource).
+Necessary configuration that is not directly specified is taken from the [`ConfigContext`](#configcontext) and [`ResourceContext`](core#resourcecontext).
 
-You can specify which events should lead to an update by either passing `options` to the [`EventReceiver`](#eventreceiver) or using `onEvent`.
-`onEvent` can also be used to directly access events allowing you to add custom event logic to your components.
+`onEvent` can be used to directly access events allowing you to add custom event logic to your components.
 
-Additionally, you can use `onNotify` which is called when the [`<Resource>`](core#resource) has been asked to update and allows you to get all events that have lead to the update at once as well as the request and revision for the update.
+There is also a [`useEventHandler`](#useeventhandler) hook available with similar functionality.
 
 <Tabs>
   <TabItem value="usage" label="Usage" default>
     ```jsx
     <EventHandler
-      options={{ some: "options" }}
-      onEvent={(e) => console.log("Received", e)}
-    >
-      ...
-    </Resource>
+      onEvent={(event) => {
+        console.log("Received", event);
+      }}
+    />
     ```
   </TabItem>
 
@@ -148,51 +145,78 @@ Additionally, you can use `onNotify` which is called when the [`<Resource>`](cor
 
 ### Props
 
-| Name          | Type                                                             | Description                                                                                                                                          |
-| ------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| eventReceiver | [`EventReceiver`](#eventreceiver)                                | [`EventReceiver`](#eventreceiver) to be used                                                                                                         |
-| resource      | `object`                                                         | [Resource context](core#resourceprovider) to be used                                                                                                 |
-| options       | `object`                                                         | [`EventReceiver`](#eventreceiver) options                                                                                                            |
-| onEvent       | `(event: any) => boolean`                                        | Callback to filter events and handle your own event logic - if `true` is returned, the event is considered as handled and the resource is not update |
-| onNotify      | `({ request: string, revision: string }, events: any[]) => void` | Informs when the [`<Resource>`](core#resource) has been requested to update                                                                          |
+| Name          | Type                                                             | Description                                                                                                                        |
+| ------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| options       | `object`                                                         | Options for the [`EventReceiver`](#eventreceiver)                                                                                  |
+| disabled      | `boolean`                                                        | Disables the event handler                                                                                                         |
+| onEvent       | `(event: any) => boolean`                                        | Callback to filter events and handle your own event logic - if `true` is returned, the event does not cause the resource to update |
+| onNotify      | `({ request: string, revision: string }, events: any[]) => void` | Provides information on when the resource has been requested to update - `events` contains the events that lead to the update      |
+| resource      | `object`                                                         | [`ResourceContext`](core#resourcecontext) to be used                                                                               |
+| eventReceiver | [`EventReceiver`](#eventreceiver)                                | [`EventReceiver`](#eventreceiver) to be used                                                                                       |
 
-## `composeHandlers`
+### Related
 
-Utility for composing multiple event handlers.
-Invokes each handler from left to right, but stops immediately when a handler returns `true`.
+[`useEventHandler`](#useeventhandler)
+
+## `useEventHandler`
+
+Enables automatic updating for a [`<Resource>`](core#resource) component or [`useResource`](core#useresource) hook by subscribing to an [`EventReceiver`](#eventreceiver).
+
+Necessary configuration that is not directly specified is taken from the [`ConfigContext`](#configcontext) and [`ResourceContext`](core#resourcecontext).
+
+`onEvent` can be used to directly access events allowing you to add custom event logic to your components.
+
+There is also an [`<EventHandler>`](#eventhandler) component available with similar functionality.
 
 <Tabs>
   <TabItem value="usage" label="Usage" default>
-    ```js
-    const composedHandler = composeHandlers(
-      (event) => console.log('Received', event),
-      (event) => ...
-    );
+    ```jsx
+    useEventHandler({
+      resource,
+      onEvent: (event) => {
+        console.log("Received", event);
+      },
+    });
     ```
   </TabItem>
 
   <TabItem value="import" label="Import">
     ```js
-    import { composeHandlers } from "@civet/events";
+    import { useEventHandler } from "@civet/events";
     ```
   </TabItem>
 </Tabs>
 
 ### Function arguments
 
-| Name        | Type                      | Description    |
-| ----------- | ------------------------- | -------------- |
-| ...handlers | `(event: any) => boolean` | Event handlers |
+| Name   | Type     | Description                                                 |
+| ------ | -------- | ----------------------------------------------------------- |
+| config | `object` | [Event handler configuration](#event-handler-configuration) |
+
+#### Event handler configuration
+
+| Name          | Type                                                             | Description                                                                                                                        |
+| ------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| options       | `object`                                                         | Options for the [`EventReceiver`](#eventreceiver)                                                                                  |
+| disabled      | `boolean`                                                        | Disables the event handler                                                                                                         |
+| onEvent       | `(event: any) => boolean`                                        | Callback to filter events and handle your own event logic - if `true` is returned, the event does not cause the resource to update |
+| onNotify      | `({ request: string, revision: string }, events: any[]) => void` | Provides information on when the resource has been requested to update - `events` contains the events that lead to the update      |
+| resource      | `object`                                                         | [`ResourceContext`](core#resourcecontext) to be used                                                                               |
+| eventReceiver | [`EventReceiver`](#eventreceiver)                                | [`EventReceiver`](#eventreceiver) to be used                                                                                       |
 
 ### Return type
 
-| Type                      | Description       |
-| ------------------------- | ----------------- |
-| `(event: any) => boolean` | Composed handlers |
+| Type   | Description |
+| ------ | ----------- |
+| `void` |             |
+
+### Related
+
+[`<EventHandler>`](#eventhandler)
 
 ## `EventReceiver`
 
-EventReceiver base class.
+Base class for implementing your own EventReceiver.
 
 <Tabs>
   <TabItem value="usage" label="Usage" default>
@@ -200,11 +224,14 @@ EventReceiver base class.
     class CustomReceiver extends EventReceiver {
       handleSubscribe(resource, options, handler) {
         ...
+
         const unsubscribe = () => {
           ...
         };
         return unsubscribe;
       }
+
+      ...
     }
 
     const receiver = new CustomReceiver();
@@ -234,7 +261,7 @@ EventReceiver base class.
 
 #### Abstract functions
 
-The function `subscribe` internally invokes its abstract counterpart `handleSubscribe` and performs generic validation on its parameters and return value. Therefore, you should not just override it, but implement the abstract `handleSubscribe` method instead.
+The function `subscribe` internally invokes its corresponding abstract counterpart `handleSubscribe` and performs generic validation on its parameters and return value. Therefore, you should not override it, but implement the abstract `handleSubscribe` method instead.
 
 ## `isEventReceiver`
 
@@ -243,10 +270,10 @@ Identifies [`EventReceiver`](#eventreceiver) instances.
 <Tabs>
   <TabItem value="usage" label="Usage" default>
     ```js
-    const er = new EventReceiver();
+    const receiver = new EventReceiver();
 
-    if (!isEventReceiver(er)) {
-      throw new Error("Should be a EventReceiver instance");
+    if (!isEventReceiver(receiver)) {
+      throw new Error("Should be an EventReceiver instance");
     }
     ```
   </TabItem>
@@ -260,9 +287,9 @@ Identifies [`EventReceiver`](#eventreceiver) instances.
 
 ### Function arguments
 
-| Name          | Type  | Description              |
-| ------------- | ----- | ------------------------ |
-| eventReceiver | `any` | The object to be checked |
+| Name          | Type  | Description               |
+| ------------- | ----- | ------------------------- |
+| eventReceiver | `any` | The element to be checked |
 
 ### Return type
 
@@ -290,3 +317,42 @@ PropType for [`EventReceiver`](#eventreceiver) instances.
     ```
   </TabItem>
 </Tabs>
+
+## `composeHandlers`
+
+Utility for composing multiple event handlers.
+Invokes each handler from left to right, but stops immediately when a handler returns `true`.
+
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```js
+    const composedHandler = composeHandlers(
+      (event) => {
+        console.log("Received", event);
+      },
+      (event) => true,
+      (event) => {
+        console.log("Never executed");
+      }
+    );
+    ```
+  </TabItem>
+
+  <TabItem value="import" label="Import">
+    ```js
+    import { composeHandlers } from "@civet/events";
+    ```
+  </TabItem>
+</Tabs>
+
+### Function arguments
+
+| Name        | Type                      | Description    |
+| ----------- | ------------------------- | -------------- |
+| ...handlers | `(event: any) => boolean` | Event handlers |
+
+### Return type
+
+| Type                      | Description      |
+| ------------------------- | ---------------- |
+| `(event: any) => boolean` | Composed handler |
