@@ -2,6 +2,9 @@
 sidebar_position: 3
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 # Events
 
 [NPM](https://npmjs.com/package/@civet/events) | [GitHub](https://github.com/civet-org/events)
@@ -12,33 +15,12 @@ npm install @civet/events
 
 The events module provides advanced event handling functionality.
 
-The [`DataStore`](core#datastore) already has basic support for handling events. However, it is limited to updating all subscribers of a specific resource.
+The [`DataProvider`](core#dataprovider) already has basic support for handling events. However, it is limited to updating all subscribers of a specific resource.
 If you need more advanced event handling, this is the place to go.
 
-## `<ConfigProvider>`
+## `ConfigContext`
 
-Provides general configuration for event components to its descendants using React's context API.
-
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
-
-```jsx
-<ConfigProvider eventReceiver={receiver}>...</ConfigProvider>
-```
-
-<!--Import-->
-
-```js
-import { ConfigProvider } from "@civet/events";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
-
-### Props
-
-| Name          | Type                              | Description |
-| ------------- | --------------------------------- | ----------- |
-| eventReceiver | [`EventReceiver`](#eventreceiver) |             |
+React context for providing shared configuration to event components.
 
 ### Context
 
@@ -48,47 +30,91 @@ import { ConfigProvider } from "@civet/events";
 
 ### Related
 
-[`<ConfigConsumer>`](#configconsumer), [`<EventHandler>`](#eventhandler), [`useConfigContext`](#useconfigcontext)
+[`<ConfigProvider>`](#configprovider), [`<ConfigConsumer>`](#configconsumer), [`useConfigContext`](#useconfigcontext)
+
+## `<ConfigProvider>`
+
+Context provider for the [`ConfigContext`](#configcontext).
+
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```jsx
+    <ConfigProvider eventReceiver={receiver}>...</ConfigProvider>
+    ```
+  </TabItem>
+
+  <TabItem value="import" label="Import">
+    ```js
+    import { ConfigProvider } from "@civet/events";
+    ```
+  </TabItem>
+</Tabs>
+
+### Props
+
+| Name          | Type                              | Description |
+| ------------- | --------------------------------- | ----------- |
+| eventReceiver | [`EventReceiver`](#eventreceiver) |             |
+
+### Related
+
+[`ConfigContext`](#configcontext), [`<ConfigConsumer>`](#configconsumer), [`useConfigContext`](#useconfigcontext)
 
 ## `<ConfigConsumer>`
 
-Context consumer for [`<ConfigProvider>`](#configprovider).
+Context consumer for the [`ConfigContext`](#configcontext).
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```jsx
+    <ConfigConsumer>
+      {(context) => ...}
+    </ConfigConsumer>
+    ```
+  </TabItem>
 
-```jsx
-<ConfigConsumer>
-  {(context) => ...}
-</ConfigConsumer>
-```
+  <TabItem value="import" label="Import">
+    ```js
+    import { ConfigConsumer } from "@civet/events";
+    ```
+  </TabItem>
+</Tabs>
 
-<!--Import-->
+### Related
 
-```js
-import { ConfigConsumer } from "@civet/events";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+[`ConfigContext`](#configcontext), [`<ConfigProvider>`](#configprovider), [`useConfigContext`](#useconfigcontext)
 
 ## `useConfigContext`
 
-Context hook for [`<ConfigProvider>`](#configprovider).
+Context consumer for the [`ConfigContext`](#configcontext).
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```js
+    const context = useConfigContext();
+    ```
+  </TabItem>
 
-```js
-const configContext = useConfigContext();
-```
+  <TabItem value="import" label="Import">
+    ```js
+    import { useConfigContext } from "@civet/events";
+    ```
+  </TabItem>
+</Tabs>
 
-<!--Import-->
+### Function arguments
 
-```js
-import { useConfigContext } from "@civet/events";
-```
+None
 
-<!--END_DOCUSAURUS_CODE_TABS-->
+### Return type
+
+| Type     | Description                       |
+| -------- | --------------------------------- |
+| `object` | [ConfigContext](#configcontext) |
+
+### Related
+
+[`ConfigContext`](#configcontext), [`<ConfigProvider>`](#configprovider), [`<ConfigConsumer>`](#configconsumer)
 
 ## `<EventHandler>`
 
@@ -101,25 +127,24 @@ You can specify which events should lead to an update by either passing `options
 
 Additionally, you can use `onNotify` which is called when the [`<Resource>`](core#resource) has been asked to update and allows you to get all events that have lead to the update at once as well as the request and revision for the update.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```jsx
+    <EventHandler
+      options={{ some: "options" }}
+      onEvent={(e) => console.log("Received", e)}
+    >
+      ...
+    </Resource>
+    ```
+  </TabItem>
 
-```jsx
-<EventHandler
-  options={{ some: "options" }}
-  onEvent={(e) => console.log("Received", e)}
->
-  ...
-</Resource>
-```
-
-<!--Import-->
-
-```js
-import { EventHandler } from "@civet/events";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { EventHandler } from "@civet/events";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Props
 
@@ -136,23 +161,22 @@ import { EventHandler } from "@civet/events";
 Utility for composing multiple event handlers.
 Invokes each handler from left to right, but stops immediately when a handler returns `true`.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```js
+    const composedHandler = composeHandlers(
+      (event) => console.log('Received', event),
+      (event) => ...
+    );
+    ```
+  </TabItem>
 
-```js
-const composedHandler = composeHandlers(
-  (event) => console.log('Received', event),
-  (event) => ...
-);
-```
-
-<!--Import-->
-
-```js
-import { composeHandlers } from "@civet/events";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { composeHandlers } from "@civet/events";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Function arguments
 
@@ -170,30 +194,29 @@ import { composeHandlers } from "@civet/events";
 
 EventReceiver base class.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```js
+    class CustomReceiver extends EventReceiver {
+      handleSubscribe(resource, options, handler) {
+        ...
+        const unsubscribe = () => {
+          ...
+        };
+        return unsubscribe;
+      }
+    }
 
-```js
-class CustomReceiver extends EventReceiver {
-  handleSubscribe(resource, options, handler) {
-    ...
-    const unsubscribe = () => {
-      ...
-    };
-    return unsubscribe;
-  }
-}
+    const receiver = new CustomReceiver();
+    ```
+  </TabItem>
 
-const receiver = new CustomReceiver();
-```
-
-<!--Import-->
-
-```js
-import { EventReceiver } from "@civet/events";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { EventReceiver } from "@civet/events";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Class members
 
@@ -217,24 +240,23 @@ The function `subscribe` internally invokes its abstract counterpart `handleSubs
 
 Identifies [`EventReceiver`](#eventreceiver) instances.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```js
+    const er = new EventReceiver();
 
-```js
-const er = new EventReceiver();
+    if (!isEventReceiver(er)) {
+      throw new Error("Should be a EventReceiver instance");
+    }
+    ```
+  </TabItem>
 
-if (!isEventReceiver(er)) {
-  throw new Error("Should be a EventReceiver instance");
-}
-```
-
-<!--Import-->
-
-```js
-import { isEventReceiver } from "@civet/events";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { isEventReceiver } from "@civet/events";
+    ```
+  </TabItem>
+</Tabs>
 
 ### Function arguments
 
@@ -252,20 +274,19 @@ import { isEventReceiver } from "@civet/events";
 
 PropType for [`EventReceiver`](#eventreceiver) instances.
 
-<!--DOCUSAURUS_CODE_TABS-->
-<!--Usage-->
+<Tabs>
+  <TabItem value="usage" label="Usage" default>
+    ```js
+    const propTypes = {
+      optional: eventReceiverPropType,
+      required: eventReceiverPropType.isRequired,
+    };
+    ```
+  </TabItem>
 
-```js
-const propTypes = {
-  optional: eventReceiverPropType,
-  required: eventReceiverPropType.isRequired,
-};
-```
-
-<!--Import-->
-
-```js
-import { eventReceiverPropType } from "@civet/events";
-```
-
-<!--END_DOCUSAURUS_CODE_TABS-->
+  <TabItem value="import" label="Import">
+    ```js
+    import { eventReceiverPropType } from "@civet/events";
+    ```
+  </TabItem>
+</Tabs>
