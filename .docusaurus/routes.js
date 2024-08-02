@@ -3,68 +3,33 @@ import ComponentCreator from '@docusaurus/ComponentCreator';
 
 export default [
   {
-    path: '/__docusaurus/debug',
-    component: ComponentCreator('/__docusaurus/debug', '671'),
-    exact: true
-  },
-  {
-    path: '/__docusaurus/debug/config',
-    component: ComponentCreator('/__docusaurus/debug/config', 'c91'),
-    exact: true
-  },
-  {
-    path: '/__docusaurus/debug/content',
-    component: ComponentCreator('/__docusaurus/debug/content', '931'),
-    exact: true
-  },
-  {
-    path: '/__docusaurus/debug/globalData',
-    component: ComponentCreator('/__docusaurus/debug/globalData', '6a9'),
-    exact: true
-  },
-  {
-    path: '/__docusaurus/debug/metadata',
-    component: ComponentCreator('/__docusaurus/debug/metadata', 'af8'),
-    exact: true
-  },
-  {
-    path: '/__docusaurus/debug/registry',
-    component: ComponentCreator('/__docusaurus/debug/registry', 'c7b'),
-    exact: true
-  },
-  {
-    path: '/__docusaurus/debug/routes',
-    component: ComponentCreator('/__docusaurus/debug/routes', '887'),
-    exact: true
-  },
-  {
     path: '/blog',
-    component: ComponentCreator('/blog', 'f51'),
+    component: ComponentCreator('/blog', '51c'),
     exact: true
   },
   {
     path: '/blog/archive',
-    component: ComponentCreator('/blog/archive', '65c'),
+    component: ComponentCreator('/blog/archive', '3a5'),
     exact: true
   },
   {
     path: '/blog/tags',
-    component: ComponentCreator('/blog/tags', '1d1'),
+    component: ComponentCreator('/blog/tags', 'b10'),
     exact: true
   },
   {
     path: '/blog/tags/launch',
-    component: ComponentCreator('/blog/tags/launch', '1f9'),
+    component: ComponentCreator('/blog/tags/launch', 'a1e'),
     exact: true
   },
   {
     path: '/blog/website-launched',
-    component: ComponentCreator('/blog/website-launched', '86f'),
+    component: ComponentCreator('/blog/website-launched', '26f'),
     exact: true
   },
   {
     path: '/docs',
-    component: ComponentCreator('/docs', '5a2'),
+    component: ComponentCreator('/docs', '170'),
     routes: [
       {
         path: '/docs/api/',
@@ -124,7 +89,7 @@ export default [
   },
   {
     path: '/',
-    component: ComponentCreator('/', '001'),
+    component: ComponentCreator('/', '252'),
     exact: true
   },
   {

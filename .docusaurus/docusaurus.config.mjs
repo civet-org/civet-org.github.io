@@ -26,7 +26,7 @@ export default {
       "classic",
       {
         "docs": {
-          "sidebarPath": "/Users/aaron/Projekte/github/civet/docs-2/sidebars.js",
+          "sidebarPath": "/Users/aaron/Projekte/github/civet/docs/sidebars.js",
           "editUrl": "https://github.com/civet-org/civet-org.github.io/"
         },
         "blog": {
@@ -34,7 +34,7 @@ export default {
           "editUrl": "https://github.com/civet-org/civet-org.github.io/"
         },
         "theme": {
-          "customCss": "/Users/aaron/Projekte/github/civet/docs-2/src/css/custom.css"
+          "customCss": "/Users/aaron/Projekte/github/civet/docs/src/css/custom.css"
         }
       }
     ]
