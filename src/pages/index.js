@@ -1,10 +1,11 @@
-import React from "react";
-import classnames from "classnames";
-import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import useBaseUrl from "@docusaurus/useBaseUrl";
-import styles from "./styles.module.css";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import Layout from "@theme/Layout";
+import clsx from "clsx";
+import React from "react";
+
+import styles from "./index.module.css";
 
 const features = [
   {
@@ -39,7 +40,7 @@ const features = [
 function Feature({ imageUrl, title, description }) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
-    <div className={classnames("col col--4", styles.feature)}>
+    <div className={clsx("col col--4", styles.feature)}>
       {imgUrl && (
         <div className="text--center">
           <img className={styles.featureImage} src={imgUrl} alt={title} />
@@ -51,35 +52,34 @@ function Feature({ imageUrl, title, description }) {
   );
 }
 
-function Home() {
-  const context = useDocusaurusContext();
-  const { siteConfig = {} } = context;
+export default function Home() {
+  const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
       description={siteConfig.tagline}
     >
-      <header className={classnames("hero hero--primary", styles.heroBanner)}>
+      <header className={clsx("hero hero--primary", styles.heroBanner)}>
         <div className="container">
           <h1 className="hero__title">{siteConfig.title}</h1>
           <p className="hero__subtitle">{siteConfig.tagline}</p>
           <div className={styles.buttons}>
             <Link
-              className={classnames(
+              className={clsx(
                 "button button--outline button--secondary button--lg",
                 styles.getStarted
               )}
-              to={useBaseUrl("docs/")}
+              to="/docs/category/getting-started"
             >
               Get Started
             </Link>
             &nbsp; {/* ??? */}
             <Link
-              className={classnames(
+              className={clsx(
                 "button button--outline button--secondary button--lg",
                 styles.apiReference
               )}
-              to={useBaseUrl("docs/api")}
+              to={"/docs/category/api-reference"}
             >
               API Reference
             </Link>
@@ -106,9 +106,7 @@ function Home() {
                 The resource component is used to access your data, which you
                 can then hand over to your display components.
                 <br />
-                <a href={useBaseUrl("/docs/api-core#resource")}>
-                  Resource reference
-                </a>
+                <a href="/docs/api/core#resource">Resource reference</a>
               </p>
               <img src={useBaseUrl("img/example-simple.png")} alt="Learn How" />
             </div>
@@ -141,5 +139,3 @@ function Home() {
     </Layout>
   );
 }
-
-export default Home;

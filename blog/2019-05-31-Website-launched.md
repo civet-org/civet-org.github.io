@@ -1,10 +1,7 @@
 ---
-id: website-launched
+slug: website-launched
 title: Website launched
-author: Aaron Burmeister
-author_title: Author
-author_url: https://github.com/hatsuo
-author_image_url: https://www.gravatar.com/avatar/bfc69e97befc3356460c3e2f5b574e04
+authors: aaron
 tags: [launch]
 ---
 

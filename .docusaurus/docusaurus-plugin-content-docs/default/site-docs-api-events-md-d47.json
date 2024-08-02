@@ -1,0 +1,23 @@
+{
+  "unversionedId": "api/events",
+  "id": "api/events",
+  "title": "Events",
+  "description": "NPM | GitHub",
+  "source": "@site/docs/api/events.md",
+  "sourceDirName": "api",
+  "slug": "/api/events",
+  "permalink": "/docs/api/events",
+  "draft": false,
+  "editUrl": "https://github.com/civet-org/civet-org.github.io/docs/api/events.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "docsSidebar",
+  "previous": {
+    "title": "Core",
+    "permalink": "/docs/api/core"
+  }
+}
