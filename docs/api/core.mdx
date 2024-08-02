@@ -107,7 +107,7 @@ None
 
 | Type     | Description                       |
 | -------- | --------------------------------- |
-| `object` | [ConfigContext](#configcontext) |
+| `object` | [`ConfigContext`](#configcontext) |
 
 ### Related
 
@@ -234,7 +234,7 @@ The provided [`DataProvider`](#dataprovider) must not be changed.
 
 | Type     | Description                       |
 | -------- | --------------------------------- |
-| `object` | [ResourceContext](#resourcecontext) |
+| `object` | [`ResourceContext`](#resourcecontext) |
 
 ### Related
 
@@ -339,6 +339,8 @@ Base class for implementing your own DataProvider.
       handleGet(resource, query, options, meta) {
         return ...;
       }
+
+      ...
     }
 
     const provider = new CustomProvider();
@@ -364,7 +366,7 @@ Base class for implementing your own DataProvider.
 | remove              | resourceName: `string`, query: `any`, options: `object`, meta: `object` &#124; [`Meta`](#meta)                                                                                                               | `Promise<any>`            | Remove data (uses `handleRemove` internally)                                                                                                                                                                            |
 | subscribe           | resourceName: `string`, handler: `() => void`                                                                                                                                                                | unsubscribe: `() => void` | Subscribe to data change notifications for the specified `resourceName`                                                                                                                                                 |
 | notify              | resourceName: `string`                                                                                                                                                                                       | `void`                    | Notify data changes for the specified `resourceName` (if no `resourceName` is specified, all subscribers are notified)                                                                                                  |
-| extend              | `{ context: (contextPlugin: ReactHook) => void, ui: (uiPlugin: ReactComponent) => void }`                                                                                                                    | `void`                    | Extend Civet with custom functionality (see [Extending Civet](/docs/guides/extending#dataprovider) for more details)                                                                                                    |
+| extend              | `{ context: (contextPlugin: ReactHook) => void, ui: (uiPlugin: ReactComponent) => void }`                                                                                                                    | `void`                    | Extend Civet with custom functionality (see [Extending Civet](../guides/extending#dataprovider) for more details)                                                                                                       |
 | createInstance      |                                                                                                                                                                                                              | `any`                     | Creates an instance element for storing information that needs to be preserved over the lifetime of a consumer (available via `meta.instance` if provided)                                                              |
 | releaseInstance     | `any`                                                                                                                                                                                                        | `void`                    | Used to release an instance element previously created with `createInstance`                                                                                                                                            |
 | compareRequests     | nextRequestDetails: `object`, prevRequestDetails: `object`                                                                                                                                                   | `boolean`                 | Compare requests for equality - can be used to customize which changes to a resource's configuration cause a new request to be created                                                                                  |
@@ -452,9 +454,9 @@ Identifies [`DataProvider`](#dataprovider) instances.
 <Tabs>
   <TabItem value="usage" label="Usage" default>        
     ```js
-    const ds = new DataProvider();
+    const provider = new DataProvider();
 
-    if (!isDataProvider(ds)) {
+    if (!isDataProvider(provider)) {
       throw new Error("Should be a DataProvider instance");
     }
     ```
@@ -469,9 +471,9 @@ Identifies [`DataProvider`](#dataprovider) instances.
 
 ### Function arguments
 
-| Name         | Type  | Description              |
-| ------------ | ----- | ------------------------ |
-| dataProvider | `any` | The object to be checked |
+| Name         | Type  | Description               |
+| ------------ | ----- | ------------------------- |
+| dataProvider | `any` | The element to be checked |
 
 ### Return type
 
@@ -504,7 +506,7 @@ PropType for [`DataProvider`](#dataprovider) instances.
 
 Creates a plugin from the provided configuration function.
 
-See [Extending Civet](/docs/guides/extending#dataprovider-plugins) for further details.
+See [Extending Civet](../guides/extending#dataprovider-plugins) for further details.
 
 <Tabs>
   <TabItem value="usage" label="Usage" default>
