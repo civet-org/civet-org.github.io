@@ -169,24 +169,24 @@ import { ResourceProvider } from "@civet/core";
 
 ### Context
 
-| Name         | Type                      | Description                                                                                       |
-| ------------ | ------------------------- | ------------------------------------------------------------------------------------------------- |
-| name         | `string`                  | Resource name                                                                                     |
-| ids          | `any[]`                   | Queried IDs                                                                                       |
-| query        | `any`                     | Query filter                                                                                      |
-| options      | `object`                  | [`DataStore`](#datastore) options used for the request                                            |
-| dataStore    | [`DataStore`](#datastore) | [`DataStore`](#datastore) to be used for requests                                                 |
-| request      | `string`                  | Unique identifier for the current request                                                         |
-| revision     | `string`                  | Unique identifier for the current request's revision                                              |
-| data         | `any[]`                   | The actual data                                                                                   |
-| meta         | `object`                  | Metadata                                                                                          |
-| error        | `Error` &#124; `boolean`  | Error information about the most recent request, or `true` if no further information is available |
-| isEmpty      | `boolean`                 | Whether fetching data is prevented                                                                |
-| isLoading    | `boolean`                 | Whether another query is currently being executed                                                 |
-| isIncomplete | `boolean`                 | Whether the current query is still being executed                                                 |
-| isInitial    | `boolean`                 | Whether the current query is the first non failing query                                          |
-| isStale      | `boolean`                 | Whether the current data is stale                                                                 |
-| notify       | `() => void`              | Callback to reload the current request                                                            |
+| Name         | Type                                                   | Description                                                                                        |
+| ------------ | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| name         | `string`                                               | Resource name                                                                                      |
+| ids          | `any[]`                                                | Queried IDs                                                                                        |
+| query        | `any`                                                  | Query filter                                                                                       |
+| options      | `object`                                               | [`DataStore`](#datastore) options used for the request                                             |
+| dataStore    | [`DataStore`](#datastore)                              | [`DataStore`](#datastore) to be used for requests                                                  |
+| request      | `string`                                               | Unique identifier for the current request - the value can be compared alphanumerically             |
+| revision     | `string`                                               | Unique identifier for the current request's revision - the value can be compared alphanumerically  |
+| data         | `any[]`                                                | The actual data                                                                                    |
+| meta         | `object`                                               | Metadata                                                                                           |
+| error        | `Error` &#124; `boolean`                               | Error information about the most recent request, or `true` if no further information is available  |
+| isEmpty      | `boolean`                                              | Whether fetching data is prevented                                                                 |
+| isLoading    | `boolean`                                              | Whether another query is currently being executed                                                  |
+| isIncomplete | `boolean`                                              | Whether the current query is still being executed                                                  |
+| isInitial    | `boolean`                                              | Whether the current query is the first non failing query                                           |
+| isStale      | `boolean`                                              | Whether the current data is stale                                                                  |
+| notify       | `() => Promise<{ request: string, revision: string }>` | Callback to reload the current request - Returns a Promise with the resulting request and revision |
 
 ### Related
 
