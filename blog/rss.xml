@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>Civet Blog</title>
+        <link>https://civet.js.org/blog</link>
+        <description>Civet Blog</description>
+        <lastBuildDate>Fri, 31 May 2019 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
+        <item>
+            <title><![CDATA[Website launched]]></title>
+            <link>https://civet.js.org/blog/website-launched</link>
+            <guid>https://civet.js.org/blog/website-launched</guid>
+            <pubDate>Fri, 31 May 2019 00:00:00 GMT</pubDate>
+            <description><![CDATA[Launched the website.]]></description>
+            <content:encoded><![CDATA[<p>Launched the website.</p>]]></content:encoded>
+            <category>launch</category>
+        </item>
+    </channel>
+</rss>

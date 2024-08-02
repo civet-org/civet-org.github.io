@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://civet.js.org/blog</id>
+    <title>Civet Blog</title>
+    <updated>2019-05-31T00:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://civet.js.org/blog"/>
+    <subtitle>Civet Blog</subtitle>
+    <icon>https://civet.js.org/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[Website launched]]></title>
+        <id>https://civet.js.org/blog/website-launched</id>
+        <link href="https://civet.js.org/blog/website-launched"/>
+        <updated>2019-05-31T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Launched the website.]]></summary>
+        <content type="html"><![CDATA[<p>Launched the website.</p>]]></content>
+        <author>
+            <name>Aaron Burmeister</name>
+            <uri>https://github.com/2manyvcos</uri>
+        </author>
+        <category label="launch" term="launch"/>
+    </entry>
+</feed>
