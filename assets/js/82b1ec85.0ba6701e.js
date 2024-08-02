@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[182],{5600:e=>{e.exports=JSON.parse('{"title":"API Reference","slug":"/category/api-reference","permalink":"/docs/category/api-reference","navigation":{"previous":{"title":"Extending Civet","permalink":"/docs/guides/extending"},"next":{"title":"Introduction","permalink":"/docs/api/"}}}')}}]);
