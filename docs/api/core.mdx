@@ -251,7 +251,7 @@ In most cases, it is better to use [`<Resource>`](#resource) or [`useResource`](
     ```jsx
     const context = useResource(...);
 
-    <ResourceProvider value={context}>...</ResourceProvider>
+    <ResourceProvider resource={context}>...</ResourceProvider>
     ```
   </TabItem>
 
@@ -264,9 +264,9 @@ In most cases, it is better to use [`<Resource>`](#resource) or [`useResource`](
 
 ### Props
 
-| Name  | Type                                  | Description |
-| ----- | ------------------------------------- | ----------- |
-| value | [`ResourceContext`](#resourcecontext) |             |
+| Name     | Type                                  | Description |
+| -------- | ------------------------------------- | ----------- |
+| resource | [`ResourceContext`](#resourcecontext) |             |
 
 ### Related
 
