@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkdocs=globalThis.webpackChunkdocs||[]).push([[947],{6600:a=>{a.exports=JSON.parse('{"authors":[{"name":"Aaron Burmeister","title":"Author","url":"https://github.com/2manyvcos","imageURL":"https://www.gravatar.com/avatar/a13ee704b9eafe700df5e6cc1fca6549","key":"aaron","page":null,"count":1}]}')}}]);
