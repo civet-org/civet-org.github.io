@@ -47,6 +47,7 @@ const config: Config = {
           // Remove this to remove the "edit this page" links.
           editUrl: "https://github.com/civet-org/civet-org.github.io/",
         },
+
         blog: {
           showReadingTime: true,
           feedOptions: {
@@ -60,6 +61,7 @@ const config: Config = {
           onInlineAuthors: "warn",
           onUntruncatedBlogPosts: "warn",
         },
+
         theme: {
           customCss: "./src/css/custom.css",
         },
@@ -70,16 +72,24 @@ const config: Config = {
   themeConfig: {
     // Replace with your project's social card
     image: "img/civet-social-card.png",
+
+    metadata: [
+      { name: "algolia-site-verification", content: "C7B2D419CD12B1E4" },
+    ],
+
     colorMode: {
       respectPrefersColorScheme: true,
     },
+
     navbar: {
       title: "Civet",
+
       logo: {
         alt: "Civet Logo",
         src: "img/civet-square-dark.png",
         srcDark: "img/civet-square-light.png",
       },
+
       items: [
         {
           type: "docSidebar",
@@ -95,13 +105,16 @@ const config: Config = {
         },
       ],
     },
+
     footer: {
       style: "dark",
+
       logo: {
         alt: "Civet Logo",
         src: "img/civet-square-light.png",
         width: 160,
       },
+
       links: [
         {
           title: "Docs",
@@ -120,6 +133,7 @@ const config: Config = {
             },
           ],
         },
+
         {
           title: "More",
           items: [
@@ -138,8 +152,43 @@ const config: Config = {
           ],
         },
       ],
+
       copyright: `Copyright © ${new Date().getFullYear()} Aaron Burmeister. Built with Docusaurus.`,
     },
+
+    algolia: {
+      // The application ID provided by Algolia
+      appId: "WV0K97C0T2",
+
+      // Public API key: it is safe to commit it
+      apiKey: "52520537c3d9d0a0e52f6b89ae496c68",
+
+      indexName: "Civet",
+
+      // Optional: see doc section below
+      contextualSearch: true,
+
+      // // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
+      // externalUrlRegex: 'external\\.com|domain\\.com',
+
+      // // Optional: Replace parts of the item URLs from Algolia. Useful when using the same search index for multiple deployments using a different baseUrl. You can use regexp or string in the `from` param. For example: localhost:3000 vs myCompany.com/docs
+      // replaceSearchResultPathname: {
+      //   from: '/docs/', // or as RegExp: /\/docs\//
+      //   to: '/',
+      // },
+
+      // Optional: Algolia search parameters
+      searchParameters: {},
+
+      // Optional: path for search page that enabled by default (`false` to disable it)
+      searchPagePath: "search",
+
+      // Optional: whether the insights feature is enabled or not on Docsearch (`false` by default)
+      insights: false,
+
+      //... other Algolia params
+    },
+
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
