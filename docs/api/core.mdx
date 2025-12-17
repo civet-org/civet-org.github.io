@@ -232,8 +232,8 @@ The provided [`DataProvider`](#dataprovider) must not be changed.
 
 ### Return type
 
-| Type     | Description                       |
-| -------- | --------------------------------- |
+| Type     | Description                           |
+| -------- | ------------------------------------- |
 | `object` | [`ResourceContext`](#resourcecontext) |
 
 ### Related
@@ -253,6 +253,7 @@ In most cases, it is better to use [`<Resource>`](#resource) or [`useResource`](
 
     <ResourceProvider resource={context}>...</ResourceProvider>
     ```
+
   </TabItem>
 
   <TabItem value="import" label="Import">
@@ -345,6 +346,7 @@ Base class for implementing your own DataProvider.
 
     const provider = new CustomProvider();
     ```
+
   </TabItem>
 
   <TabItem value="import" label="Import">
@@ -460,6 +462,7 @@ Identifies [`DataProvider`](#dataprovider) instances.
       throw new Error("Should be a DataProvider instance");
     }
     ```
+
   </TabItem>
 
   <TabItem value="import" label="Import">
@@ -511,6 +514,7 @@ See [Extending Civet](../guides/extending#dataprovider-plugins) for further deta
 
     const DataProviderWithPlugin = plugin(SomeDataProvider);
     ```
+
   </TabItem>
 
   <TabItem value="import" label="Import">
@@ -594,6 +598,7 @@ Interface for handling client side notification events.
     });
     notifier.trigger(true, 2, "test");
     ```
+
   </TabItem>
 
   <TabItem value="import" label="Import">
@@ -640,6 +645,7 @@ Interface for handling client side notification events.
     notifier.trigger(null, true, 2, "test"); // Notify all channels
     // Please note that the channel name is not passed to handlers by default.
     ```
+
   </TabItem>
 
   <TabItem value="import" label="Import">
@@ -681,6 +687,7 @@ Interface for handling abort requests.
     signal.lock();
     signal.abort(); // No listeners will be notified since the signal is already locked
     ```
+
   </TabItem>
 
   <TabItem value="import" label="Import">
@@ -735,6 +742,7 @@ Meta information key value map.
     assert(previous === unchanged);
     assert(previous !== changed);
     ```
+
   </TabItem>
 
   <TabItem value="import" label="Import">
