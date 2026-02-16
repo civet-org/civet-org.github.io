@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkdocs=globalThis.webpackChunkdocs||[]).push([[635],{8728:t=>{t.exports=JSON.parse('{"categoryGeneratedIndex":{"title":"Getting Started","slug":"/category/getting-started","permalink":"/docs/category/getting-started","sidebar":"docsSidebar","navigation":{"next":{"title":"Installation","permalink":"/docs/getting-started/installation"}}}}')}}]);
