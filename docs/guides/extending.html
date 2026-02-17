@@ -10,7 +10,7 @@
 
 
 <link rel="search" type="application/opensearchdescription+xml" title="Civet" href="/opensearch.xml"><link rel="stylesheet" href="/assets/css/styles.fcd7ed91.css">
-<script src="/assets/js/runtime~main.7c33c614.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.6e5ccb94.js" defer="defer"></script>
 <script src="/assets/js/main.70dd7a61.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -39,7 +39,8 @@ Context plugins cannot render any content.</p>
 <div class="theme-admonition theme-admonition-warning admonition_xJq3 alert alert--warning"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>warning</div><div class="admonitionContent_BuS1"><p>The context returned by a context plugin must be memoized, for example by using React&#x27;s <code>useMemo</code> hook.</p></div></div>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="ui-plugins">UI plugins<a href="#ui-plugins" class="hash-link" aria-label="Direct link to UI plugins" title="Direct link to UI plugins" translate="no">​</a></h3>
 <p>UI plugins are React components for extending the <a class="" href="/docs/api/core#resourcecontext"><code>ResourceContext</code></a>.
-They only work for the <a class="" href="/docs/api/core#resource"><code>Resource</code></a> component and are ignored for the <a class="" href="/docs/api/core#useresource"><code>useResource</code></a> hook.</p>
+They only work for the <a class="" href="/docs/api/core#resource"><code>Resource</code></a> component and are ignored for the <a class="" href="/docs/api/core#useresource"><code>useResource</code></a> hook.
+However, when using the <a class="" href="/docs/api/core#useresource"><code>useResource</code></a> hook, UI plugin functionality can be enabled by using the <a class="" href="/docs/api/core#resourceprovider"><code>ResourceProvider</code></a> component.</p>
 <p>You can use UI plugins to render additional content.</p>
 <p>UI plugins are handled in the order they are registered, always after <a href="#context-plugins" class="">context plugins</a>.</p>
 <p>Their signature is:</p>
