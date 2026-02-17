@@ -68,6 +68,7 @@ The context returned by a context plugin must be memoized, for example by using 
 
 UI plugins are React components for extending the [`ResourceContext`](../api/core#resourcecontext).
 They only work for the [`Resource`](../api/core#resource) component and are ignored for the [`useResource`](../api/core#useresource) hook.
+However, when using the [`useResource`](../api/core#useresource) hook, UI plugin functionality can be enabled by using the [`ResourceProvider`](../api/core#resourceprovider) component.
 
 You can use UI plugins to render additional content.
 
