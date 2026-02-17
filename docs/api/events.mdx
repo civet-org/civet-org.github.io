@@ -299,6 +299,14 @@ Identifies [`EventReceiver`](#eventreceiver) instances.
 | --------- | --------------------------------------------------------------------------- |
 | `boolean` | Whether `eventReceiver` is an instance of [`EventReceiver`](#eventreceiver) |
 
+## `eventPlugin`
+
+[Data provider plugin](../guides/extending#dataprovider-plugins) that integrates an event handler into a resource (using a [context plugin](../guides/extending#context-plugins)).
+
+When using this plugin, you can enable events by passing the `events` prop to your [`<Resource>`](core#resource) component or [`useResource`](core#useresource) hook.
+The `events` prop can either be a `boolean` (whether events should be enabled or not) or a [Event handler configuration](#event-handler-configuration) object.
+`resource` does not need to be specified, as it is automatically populated.
+
 ## `composeHandlers`
 
 Utility for composing multiple event handlers.
