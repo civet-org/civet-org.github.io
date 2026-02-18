@@ -48,19 +48,7 @@ const config: Config = {
           editUrl: "https://github.com/civet-org/civet-org.github.io/",
         },
 
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ["rss", "atom"],
-            xslt: true,
-          },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl: "https://github.com/civet-org/civet-org.github.io/",
-          onInlineTags: "warn",
-          onInlineAuthors: "warn",
-          onUntruncatedBlogPosts: "warn",
-        },
+        blog: false,
 
         theme: {
           customCss: "./src/css/custom.css",
@@ -97,7 +85,11 @@ const config: Config = {
           position: "left",
           label: "Docs",
         },
-        { to: "/blog", label: "Blog", position: "left" },
+        {
+          to: "/docs/api/introduction",
+          position: "left",
+          label: "API Reference",
+        },
         {
           href: "https://github.com/civet-org",
           label: "GitHub",

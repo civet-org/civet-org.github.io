@@ -14,3 +14,100 @@ npm install @civet/common
 ```
 
 The common module provides general functions that can be used for a quick start where no extensive configuration is required.
+
+## `FetchProvider`
+
+[DataProvider](core#dataprovider) implementation that uses the [`fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) API.
+
+<Tabs>
+  <TabItem value="usage" label="Usage" default> 
+    ```js
+    const provider = new FetchProvider({ baseURL: 'https://example.com' });
+    ```
+
+  </TabItem>
+
+  <TabItem value="import" label="Import">
+    ```js
+    import { FetchProvider } from "@civet/common";
+    ```
+  </TabItem>
+</Tabs>
+
+### Constructor
+
+| Arguments         | Description                                       |
+| ----------------- | ------------------------------------------------- |
+| options: `object` | [Fetch provider options](#fetch-provider-options) |
+
+#### Fetch provider options
+
+| Name          | Type                                                                                        | Description                                                                                   |
+| ------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| baseURL       | `string`                                                                                    | [Base URL](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL#base) to use for requests |
+| modifyRequest | `(url: URL, request: RequestInit, meta: Meta) => Promise<void>`                             | Function for customizing requests, for example for adding authentication details              |
+| getResponse   | `(url: URL, request: RequestInit, response: Response, meta: Meta) => Promise<any \| any[]>` | Function for customizing how to resolve the response                                          |
+| handleError   | `(url: URL, request: RequestInit, response: Response, meta: Meta) => Promise<any \| any[]>` | Function for customizing error handling                                                       |
+
+### Class members
+
+| Name      |  Arguments                                                                                                                                                |  Return Type            | Description                                             |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | ------------------------------------------------------- |
+| handleGet | url: `string`, query: `RequestInit`, options: [`FetchOptions`](#fetch-options), meta: [`Meta`](core#meta), abortSignal: [`AbortSignal`](core#abortsignal) | `Promise<any \| any[]>` |                                                         |
+| request   | url: `string`, query: `RequestInit`, options: [`FetchOptions`](#fetch-options), meta: [`Meta`](core#meta), abortSignal: [`AbortSignal`](core#abortsignal) | `Promise<any \| any[]>` | Performs the specified request and returns the response |
+
+#### Fetch options
+
+| Name        | Type                                                                                        | Description                                                                                                                    |
+| ----------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| json        | `boolean`                                                                                   | Whether the response should always be parsed as JSON (regardless of the Content-Type)                                          |
+| noJson      | `boolean`                                                                                   | Whether the response should never be parsed as JSON (regardless of the Content-Type)                                           |
+| noText      | `boolean`                                                                                   | Whether the response should never be returned as plain text                                                                    |
+| getResponse | `(url: URL, request: RequestInit, response: Response, meta: Meta) => Promise<any \| any[]>` | Function for customizing how to resolve the response (takes priority over [`fetch provider options`](#fetch-provider-options)) |
+| handleError | `(url: URL, request: RequestInit, response: Response, meta: Meta) => Promise<any \| any[]>` | Function for customizing error handling (takes priority over [`fetch provider options`](#fetch-provider-options))              |
+
+## `SSEReceiver`
+
+[EventReceiver](events#eventreceiver) implementation for [`server-sent events`](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events).
+
+<Tabs>
+  <TabItem value="usage" label="Usage" default> 
+    ```js
+    const eventSource = new EventSource('https://example.com');
+    const receiver = new SSEReceiver(eventSource);
+    ```
+
+  </TabItem>
+
+  <TabItem value="import" label="Import">
+    ```js
+    import { SSEReceiver } from "@civet/common";
+    ```
+  </TabItem>
+</Tabs>
+
+### Constructor
+
+| Arguments                  | Description                                                                             |
+| -------------------------- | --------------------------------------------------------------------------------------- |
+| eventSource: `EventSource` | [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) to be used  |
+| options: `object`          | [SSE receiver options](#sse-receiver-options)                                           |
+
+#### SSE receiver options
+
+| Name      | Type                                                                                 | Description                                    |
+| --------- | ------------------------------------------------------------------------------------ | ---------------------------------------------- |
+| getEvents | `(resource: ResourceContext, type: string, event: MessageEvent) => Promise<Event[]>` | Function for customizing how to resolve events |
+
+### Class members
+
+| Name            |  Arguments                                                                                 |  Return Type | Description |
+| --------------- | ------------------------------------------------------------------------------------------ | ------------ | ----------- |
+| handleSubscribe | resource: [`ResourceContext`](core#resourcecontext), options: [`SSEOptions`](#sse-options) | `() => void` |             |
+
+#### Fetch options
+
+| Name      | Type                                                                                 | Description                                                                                                          |
+| --------- | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| events    | `string[]`                                                                           | Event types to listen for (defaults to unnamed events: `['message']`)                                                |
+| getEvents | `(resource: ResourceContext, type: string, event: MessageEvent) => Promise<Event[]>` | Function for customizing how to resolve events (takes priority over [`sse receiver options`](#sse-receiver-options)) |
