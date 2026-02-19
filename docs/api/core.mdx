@@ -604,11 +604,12 @@ Interface for handling client side notification events.
 
 ### Class members
 
-| Name         | Arguments                         | Return Type               | Description                                                          |
-| ------------ | --------------------------------- | ------------------------- | -------------------------------------------------------------------- |
-| subscribe    | handler: `(...args: any) => void` | unsubscribe: `() => void` | Subscribe to notifications                                           |
-| isSubscribed | handler: `(...args: any) => void` | `boolean`                 | Whether the provided handler is currently subscribed to the notifier |
-| trigger      | `...args: any`                    | `void`                    | Notify all currently subscribed handlers                             |
+| Name         | Arguments                         | Return Type               | Description                                                                   |
+| ------------ | --------------------------------- | ------------------------- | ----------------------------------------------------------------------------- |
+| subscribe    | handler: `(...args: any) => void` | unsubscribe: `() => void` | Subscribe to notifications                                                    |
+| once         | handler: `(...args: any) => void` | unsubscribe: `() => void` | Subscribe and automatically unsubscribe after receiving a single notification |
+| isSubscribed | handler: `(...args: any) => void` | `boolean`                 | Whether the provided handler is currently subscribed to the notifier          |
+| trigger      | `...args: any`                    | `void`                    | Notify all currently subscribed handlers                                      |
 
 ## `ChannelNotifier`
 
@@ -654,6 +655,7 @@ Interface for handling client side notification events.
 | Name         | Arguments                                          | Return Type               | Description                                                                                                                         |
 | ------------ | -------------------------------------------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | subscribe    | handler: `(channel: string, ...args: any) => void` | unsubscribe: `() => void` | Subscribe to notifications on the specified channel                                                                                 |
+| once         | handler: `(channel: string, ...args: any) => void` | unsubscribe: `() => void` | Subscribe and automatically unsubscribe after receiving a single notification on the specified channel                              |
 | isSubscribed | handler: `(channel: string, ...args: any) => void` | `boolean`                 | Whether the provided handler is currently subscribed to the specified channel                                                       |
 | trigger      | `channel: string, ...args: any`                    | `void`                    | Notify all handlers currently subscribed to the specified channel (Set the channel to `undefined` or `null` to notify all channels) |
 
