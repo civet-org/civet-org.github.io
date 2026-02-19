@@ -248,9 +248,9 @@ Base class for implementing your own EventReceiver.
 
 ### Class members
 
-| Name      | Arguments                                                                                                | Return Type               | Description         |
-| --------- | -------------------------------------------------------------------------------------------------------- | ------------------------- | ------------------- |
-| subscribe | resource: [`Notifier<[Resource]>`](core#notifier), options: `object`, handler: `(events: any[]) => void` | unsubscribe: `() => void` | Subscribe to events |
+| Name      | Arguments                                                                                                                         | Return Type               | Description         |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------- | ------------------- |
+| subscribe | resource: [`Resource \| Notifier<[Resource]> \| undefined`](core#notifier), options: `object`, handler: `(events: any[]) => void` | unsubscribe: `() => void` | Subscribe to events |
 
 ### Abstract members
 
