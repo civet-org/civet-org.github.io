@@ -95,9 +95,10 @@ The common module provides general functions that can be used for a quick start 
 
 #### SSE receiver options
 
-| Name      | Type                                                                                 | Description                                    |
-| --------- | ------------------------------------------------------------------------------------ | ---------------------------------------------- |
-| getEvents | `(resource: ResourceContext, type: string, event: MessageEvent) => Promise<Event[]>` | Function for customizing how to resolve events |
+| Name      | Type                                                                                 | Description                                                           |
+| --------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| events    | `string[]`                                                                           | Event types to listen for (defaults to unnamed events: `['message']`) |
+| getEvents | `(resource: ResourceContext, type: string, event: MessageEvent) => Promise<Event[]>` | Function for customizing how to resolve events                        |
 
 ### Class members
 
@@ -107,7 +108,7 @@ The common module provides general functions that can be used for a quick start 
 
 #### Fetch options
 
-| Name      | Type                                                                                 | Description                                                                                                          |
-| --------- | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| events    | `string[]`                                                                           | Event types to listen for (defaults to unnamed events: `['message']`)                                                |
-| getEvents | `(resource: ResourceContext, type: string, event: MessageEvent) => Promise<Event[]>` | Function for customizing how to resolve events (takes priority over [`sse receiver options`](#sse-receiver-options)) |
+| Name      | Type                                                                                 | Description                                                                                                                                 |
+| --------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| events    | `string[]`                                                                           | Event types to listen for (defaults to unnamed events: `['message']`) (takes priority over [`sse receiver options`](#sse-receiver-options)) |
+| getEvents | `(resource: ResourceContext, type: string, event: MessageEvent) => Promise<Event[]>` | Function for customizing how to resolve events (takes priority over [`sse receiver options`](#sse-receiver-options))                        |
