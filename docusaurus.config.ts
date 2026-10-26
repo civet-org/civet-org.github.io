@@ -20,11 +20,11 @@ const config: Config = {
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: "civet-org", // Usually your GitHub org/user name.
-  projectName: "civet-org.github.io", // Usually your repo name.
-  deploymentBranch: "pages",
+  // // GitHub pages deployment config.
+  // // If you aren't using GitHub pages, you don't need these.
+  // organizationName: "civet-org", // Usually your GitHub org/user name.
+  // projectName: "civet-org.github.io", // Usually your repo name.
+  // deploymentBranch: "pages",
 
   trailingSlash: false,
   onBrokenLinks: "throw",
