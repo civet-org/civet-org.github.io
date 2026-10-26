@@ -1,17 +1,14 @@
 ---
 type: pipeline
-name: Deploy Civet Documentation
+name: deploy page - civet-org.github.io
 
 when:
-  workerGroup:
-    include: [soldier]
-  trigger:
-    include: [commit, action]
-  action:
-    include: [civet:documentation:deploy]
+  workerGroup: { include: [soldier@midgar] }
+  trigger: { include: [commit, action] }
+  action: { include: [pages:civet-org.github.io:deploy] }
 
 steps:
-  - name: Deploy
+  - name: deploy page - civet-org.github.io
     task: "@reeve/npm-cli"
     params:
       SSH_KNOWN_HOSTS: { env: github/fingerprints }
